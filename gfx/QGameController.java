@@ -29,14 +29,14 @@ public class QGameController extends JFrame {
 	private boolean isPathingOverlayEnabled;
 	private boolean ispBoundsEnabled;
 	
-	public QGameController() {
+	public QGameController(QResourceManager resMan, QGameSettings gameSettings) {
 		mouseMan = new QMouseManager();
 		keyMan = new QKeyboardManager();
-		resMan = new QResourceManager();
+		this.resMan = resMan;
 		gameState = new QGameState(mouseMan, keyMan);
 		
 		// Note: QGameSettings has static methods for the time being
-		gameSettings = new QGameSettings();
+		this.gameSettings = gameSettings;
 		
 		// Note: Resource and saved state loading will be abstracted eventually
 		// Initializing game components and loading resources
@@ -45,24 +45,7 @@ public class QGameController extends JFrame {
 	
 	public void init() {
 		setSize(QGameSettings.getWinWidth(), QGameSettings.getWinHeight());
-		setTitle("I <3 Nhi");
-		
-		resMan.addImage("moveTestTerrain.jpg");
-		resMan.addImage("bgTest.jpg");
-		resMan.addImage("actorTest.png");
-		resMan.addImage("peegPlayerWalk1.png");
-		resMan.addImage("peegPlayerWalk2.png");
-		
-		resMan.addImage("peegPlayer.png");
-		resMan.addImage("bg.jpg");
-		resMan.addImage("hills1.png");
-		resMan.addImage("hills2.png");
-		resMan.addImage("rocks.png");
-		resMan.addImage("tree1.png");
-		resMan.addImage("clickyTest.png");
-		resMan.addImage("sun.png");
-		
-		resMan.addColor("highlightClr", new Color(23, 164, 255));
+		setTitle("inQ Engine Tester");
 		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -120,7 +103,7 @@ public class QGameController extends JFrame {
 	}
 	
 	public void startGameLoop() {
-		// Note: There is a jerkiness as the camera pans, need to tighten up the graphics
+		// Note: Jerkiness as camera pans, need to tighten up the graphics
 		int msDelay = 16;
 		boolean run = true;
 		long currentTime = 0;
@@ -215,7 +198,6 @@ public class QGameController extends JFrame {
 		QSceneryState hills2State = new QSceneryState(0, 0, 
 				resMan.getImage("hills2.png").getWidth(), resMan.getImage("hills2.png").getHeight(),
 				1, hills2.getActorId());
-		// Note: NEED TO WORK ON MOVERS! No need for adding a pathing map to scenery movers...
 		hills2State.addMoverModule(QMoverType.SCENERY, new QSceneryMover());
 		hills2.attachActorState(hills2State);
 		animTestScene.addScenery(hills2);
@@ -277,7 +259,7 @@ public class QGameController extends JFrame {
 	// Debugging
 	///////////
 	
-	// Note: Move debug components to UI class
+	// Note: Move debug component drawing to UI class and create QDebugTools class
 	class DebuggerWindow {
 		public DebuggerWindow() {
 			JFrame debugFrame = new JFrame();

@@ -15,6 +15,7 @@ public class QImage {
 		try {
 			img = ImageIO.read(new File(file));
 		} catch (IOException e) {
+			System.out.println(file);
 			e.printStackTrace();
 		}
 		
