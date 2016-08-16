@@ -1,24 +1,17 @@
 package ryan.tom.inq.gfx;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.TreeMap;
 
-import javax.swing.JPanel;
-
-/*
- * Note: This will need to be split; need a renderer and a scene
- */
-
-@SuppressWarnings("serial")
-public class QScene extends JPanel {
+public class QScene {
 	private int sceneWidth;
 	private int sceneHeight;
 	private QResourceManager resMan;
 	private QSceneState sceneState;
 	private QMouseManager mouseMan;
 	private QScenery backGroundImg;
+	private QCameraActor camera;
 	
 	// Note: Need priority queue for discerning draw order?
 	// 		 or separate player and other important actors from actor map and draw last?
@@ -41,6 +34,7 @@ public class QScene extends JPanel {
 		player = null;
 		actors = new TreeMap<Integer, QActor>();
 		scenery = new TreeMap<Integer, QSceneryActor>();
+		camera = null;
 		
 		// Debugging
 		isPathingOverlayEnabled = false;
@@ -63,39 +57,37 @@ public class QScene extends JPanel {
 	public void addScenery(QSceneryActor actor) {
 		scenery.put(actor.getActorId(), actor);
 	}
-			
-	public void draw(Graphics2D bbg2) {
-		// Draw background first
-		backGroundImg.draw(bbg2);
 		
-		// Draw mid ground scenery next
+	public void addCamera(QCameraActor cameraActor) {
+		camera = cameraActor;
+	}
+	
+	public void draw(Graphics2D g2) {
+		// Drawing background first
+		backGroundImg.draw(g2);
+		
+		// Drawing mid ground scenery
 		for(Integer id : scenery.keySet()) {
-			scenery.get(id).draw(bbg2);
+			scenery.get(id).draw(g2);
 		}
 		
-		// Draw actors
+		// Drawing actors
 		for(Integer id : actors.keySet()) {
-			actors.get(id).draw(bbg2);
+			actors.get(id).draw(g2);
 		}
 		
-		player.draw(bbg2);
+		player.draw(g2);
 		
-		// Debugging overlays
+		// Drawing debugging overlays last
 		if(isPathingOverlayEnabled) {
-			/* 
-			 * Note: Pass camera bounds x, y, width, height to debug so it draws less
-			 *		 Will speed things up a lot
-			 *		 Might even want to draw the overlay with g2 directly
-			 *		 ^ No, drawing with bbg2 will maintain alignment
-			 */
-			sceneState.drawPathingOverlay(bbg2);
+			sceneState.drawPathingOverlay(g2);
 		}
 		
 		if(ispBoundsEnabled) {
-			player.drawActorBounds(bbg2);
+			player.drawActorBounds(g2);
 			
 			for(Integer id : actors.keySet()) {
-				actors.get(id).drawActorBounds(bbg2);
+				actors.get(id).drawActorBounds(g2);
 			}
 		}
 	}
@@ -111,12 +103,18 @@ public class QScene extends JPanel {
 	public int getSceneHeight() {
 		return sceneHeight;
 	}
+	
+	public QCameraActor getCamera() {
+		return camera;
+	}
 		
 	//////////////
 	// updateView
 	///////////
 	
 	public void updateView(long tickTime) {	
+		camera.updateView(tickTime);
+		
 		for(Integer id : scenery.keySet()) {
 			scenery.get(id).updateView(tickTime);
 		}
@@ -126,8 +124,6 @@ public class QScene extends JPanel {
 		}
 		
 		player.updateView(tickTime);
-				
-		repaint();
 	}
 	
 	/////////////
@@ -141,4 +137,5 @@ public class QScene extends JPanel {
 	public void enableBoundsOverlay(boolean ispBoundsEnabled) {
 		this.ispBoundsEnabled = ispBoundsEnabled;
 	}
+	
 }

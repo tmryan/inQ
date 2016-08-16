@@ -67,11 +67,7 @@ public class QSceneState {
 	}
 	
 	public void resolveMouseClick(int x, int y) {
-		/* 
-		 * Note: There is some offset being subtracted from these values which coincides with the upper left corner being (3, 25) not (0,0)
-		 *		 Maybe the extra space is from the window frame?
-		 */		 
-		QInteractableState foundActor = findInteractableByLocation(x + camState.getX() - 3, y + camState.getY() - 25);
+		QInteractableState foundActor = findInteractableByLocation(x + camState.getX(), y + camState.getY());
 			
 		if(foundActor != null) {
 			foundActor.onUse();
@@ -79,8 +75,7 @@ public class QSceneState {
 	}
 	
 	public void resolveMousePosition(QCoords mousePos) {
-		// Note: There is some offset being subtracted from these values which coincides with the upper left corner being (3, 25) not (0,0)
-		QInteractableState foundActor = findInteractableByLocation(mousePos.getX() + camState.getX() - 3, mousePos.getY() + camState.getY() - 25);	
+		QInteractableState foundActor = findInteractableByLocation(mousePos.getX() + camState.getX(), mousePos.getY() + camState.getY());	
 		
 		if(foundActor != null) {
 			highlightedActor = foundActor;

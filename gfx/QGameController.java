@@ -13,17 +13,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-@SuppressWarnings("serial")
-public class QGameController  {
+public class QGameController {
 	private QScene animTestScene;
 	private QGameState gameState;
-	private QGraphics gfx;
 	private static long lastUpdate;
 	private QResourceManager resMan;
 	private QMouseManager mouseMan;
 	private QKeyboardManager keyMan;
 	private QGameSettings gameSettings;
-	
+	private QGraphics gfx;	
+		
 	// Debugging states
 	private boolean isPathingOverlayEnabled;
 	private boolean ispBoundsEnabled;
@@ -33,6 +32,8 @@ public class QGameController  {
 		keyMan = new QKeyboardManager();
 		this.resMan = resMan;
 		gameState = new QGameState(mouseMan, keyMan);
+		
+		// Note: This will change when fullscreen and resizable windowed modes are supported
 		gfx = new QGraphics(gameState);
 		
 		// Note: QGameSettings has static methods for the time being
@@ -43,20 +44,12 @@ public class QGameController  {
 		init();
 	}
 	
-	public void init() {
-//		setSize(QGameSettings.getWinWidth(), QGameSettings.getWinHeight());
-//		setTitle("inQ Engine Test");
-//		
-//		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//		setLocationRelativeTo(null);
-//		setResizable(false);
-//		setVisible(true);
+	public void init() {	
 		
 		///////////////
 		// Controller
-		////////////
+		///////////
 		
-		// Adding keyboard listener
 		gfx.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -69,7 +62,6 @@ public class QGameController  {
 			}
 		});
 		
-		// Adding mouse click controller
 		gfx.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -88,10 +80,6 @@ public class QGameController  {
 		
 		loadGameState();
 		
-		// Note: This will change later once graphics and scenes are fully abstracted
-		// Adding current scene
-//		add(animTestScene, BorderLayout.CENTER);
-
 		// Initializing debugging tools
 		isPathingOverlayEnabled = false;
 		ispBoundsEnabled = false;
@@ -101,41 +89,51 @@ public class QGameController  {
 		startGameLoop();
 	}
 	
+	//////////////
+	// Game Loop
+	//////////
+	
 	public void startGameLoop() {
-		// Note: Jerkiness as camera pans, need to tighten up the graphics
 		int msDelay = 16;
 		boolean run = true;
 		long currentTime = 0;
 		int deltaTime = 0;
 		lastUpdate = 0;
 		
-		/*
-		 * Need game tick and art tick?
-		 */
-		
-		while(run) {
+		// Note: Need game tick and art tick? 		
+		while(run) {	
 			// Note: CPU is over used, throttle loop
 			currentTime = System.nanoTime() / 1000000;
+			// No noticeable difference with currentTime = System.nanoTime() >> 20;
 			deltaTime = (int) (currentTime - lastUpdate);
 
+			// Note: Track FPS and add frame counter
 			if(deltaTime > msDelay) {
-				// debug
+				// Manage debug flags, temp solution
 				animTestScene.enablePathingOverlay(isPathingOverlayEnabled);
 				animTestScene.enableBoundsOverlay(ispBoundsEnabled);
-				// update models
+				
+				// Update model
 				gameState.onTick(deltaTime);
-				// update views
+				
+				// Update view
 				gfx.updateView(deltaTime);
 				gfx.render();
+				
+				// Track time
 				lastUpdate = currentTime;
 			}
 		}
 	}
 	
-	// Loading resources prior to starting the game
-	public void loadGameState() {
-		// Lots of data input overhead here! :( 
-		// Maybe implement a buildStateFromActor() factory method?
+	// Loading game state
+	public void loadGameState() {		
+		/*
+		 * Note: Need a better way to initialize and load game states
+		 * 		 Maybe implement a createStateFromActor() factory method?
+		 * 		 Can load player chosen state as well, new or saved state
+		 * 		 Abstract to QStateManager
+		 */
 
 		// Note: creating of animation maps could probably be more elegant!
 		// Creating anim maps
@@ -179,14 +177,13 @@ public class QGameController  {
 		animTestScene.attachSceneState(testSceneState);
 		testSceneState.attachPathingMap(testSceneMap);
 		
-		// Note: Need a better way to initialize and add resources
 		gameState.attachCameraState(camState);
 		gameState.loadScene(0);
 		gameState.addPlayerState(pOneState);
 
 		animTestScene.addPlayer(peegOne);
-
-		gfx.addCamera(cam);
+		animTestScene.addCamera(cam);
+		
 		gfx.addScene(animTestScene, testSceneState.getSceneId());
 		
 		// Adding scenery		

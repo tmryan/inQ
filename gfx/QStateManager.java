@@ -1,7 +1,7 @@
 package ryan.tom.inq.gfx;
 
 /**
- * This class will manage all loading and saving of the game state.
+ * This class manages all loading and saving of the game state.
  * 
  * @author Thomas Ryan
  *
@@ -16,8 +16,12 @@ public class QStateManager {
 	
 	// Note: This will eventually load a specified state
 	public void loadGameState(QResourceManager resMan) {
-		// Lots of data input overhead here! :( 
-		// Maybe implement a buildStateFromActor() factory method?
+		/*
+		 * Note: Need a better way to initialize and load game states
+		 * 		 Maybe implement a createStateFromActor() factory method?
+		 * 		 Can load player chosen state as well, new or saved state
+		 * 		 Abstract to QStateManager
+		 */
 
 		// Note: creating of animation maps could probably be more elegant!
 		// Creating anim maps

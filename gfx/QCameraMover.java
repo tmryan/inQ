@@ -16,7 +16,7 @@ public class QCameraMover extends QAbstractMover {
 	}
 	
 	@Override
-	public boolean move(QDirection direction) {		
+	public boolean move(QDirection direction) {
 		if(direction != null) {
 			setDirection(direction);
 			// Note: On the lookout for a better solution to the camera+scenery movement linking problem
