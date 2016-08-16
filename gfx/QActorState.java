@@ -22,9 +22,9 @@ public class QActorState {
 	}
 
 	public void onTick(int tickTime, QDirection direction) {
-		// Note: Physics does falling right now, but I think this system needs some design love
-		// Note: Shouldn't be able to issue walk commands while falling, causes out of grid bounds exception 
-		// Note: AnimStates are a mess! Fix it!
+		// Note: Physics does falling right now, but I think this system needs some redesign
+		// Note: Shouldn't be able to issue walk commands while falling, can cause out of grid bounds exceptions
+		// Note: AnimStates are a mess. Fix it!
 		
 		moverSys.onTick(tickTime);
 		
@@ -134,7 +134,6 @@ public class QActorState {
 		return moverSys.getDirection();
 	}
 	
-	// Note: Mover system may need a redesign
 	public QMoverSystem getMoverSystem() {
 		return moverSys;
 	}

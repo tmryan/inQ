@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class QGameState {
 	private static int nextActorId;
+	private static int nextSceneid;
 	private QMouseManager mouseMan;
 	private QKeyboardManager keyMan;
 	private QPlayerState playerState;
@@ -14,6 +15,7 @@ public class QGameState {
 	
 	public QGameState(QMouseManager mouseMan, QKeyboardManager keyMan) {
 		nextActorId = 1;
+		nextSceneid = 1;
 		this.mouseMan = mouseMan;
 		this.keyMan = keyMan;
 		playerState = null;
@@ -22,8 +24,13 @@ public class QGameState {
 		currentScene = 0;
 	}
 	
+	// Note: These may end up in some utility class
 	public static int generateActorId() {
 		return nextActorId++;
+	}
+	
+	public static int generateSceneId() {
+		return nextSceneid++;
 	}
 	
 	/*
@@ -34,32 +41,15 @@ public class QGameState {
 		sceneStates.get(currentScene).resolveMouseClick(x, y);
 	}
 	
+	// Note: Sometimes this causes an exception... index out of bounds index 0 size 0
 	public void resolveMouseMove(int x, int y, boolean mouseEntered) {
-		// Note: Sometimes this causes an exception... index out of bounds index 0 size 0
-//		sceneStates.get(currentScene).resolveMouseMove(x,  y, mouseEntered);
+		// Do something on mouse move
 	}
 	
 	public void resolveMousePosition() {
 		sceneStates.get(currentScene).resolveMousePosition(mouseMan.getCurrentMouseCoords());
 	}
-	
-	/* 
-	 * 
-	 * Movement Notes!
-	 * 
-	 * Note: Once camera bounds reach an edge, player can move freely for the difference
-	 * 	 	 so movable scenery needs to move with camera and player will move separately
-	 * 
-	 * Note: Need better implementation here, is murky
-	 * 		 Maybe have resolveMovement() called by a keyPressed() method which controller calls
-	 * 
-	 * Note: Camera centered with player until bounds hit edge?
-	 * 
-	 * Note: Camera needs to move with player when player hits mid game resolution
-	 * 
-	 * Note: Once camera hits bounds, player moves freely until its bounds collide
-	 */ 
-	
+		
 	// Note: This system could stand to be more elegant
 	public QDirection resolveKeyCommands(int tickTime) {
 		QDirection direction = null;
@@ -110,6 +100,10 @@ public class QGameState {
 	public void loadScene(int sceneID) {
 		currentScene = sceneID;
 		sceneStates.get(currentScene).attachCameraState(camState);
+	}
+	
+	public int getCurrentSceneID() {
+		return sceneStates.get(currentScene).getSceneId();
 	}
 	
 	public void onTick(int tickTime) {

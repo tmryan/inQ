@@ -13,6 +13,7 @@ public class QSceneState {
 	private int minCamY;
 	private int maxCamX;
 	private int maxCamY;
+	private int id;
 	private QPlayerState playerState;
 	private QCameraState camState;
 	private TreeMap<Integer, QActorState> actorStates;
@@ -28,6 +29,7 @@ public class QSceneState {
 		this.minCamY = minCamY;
 		this.maxCamX = maxCamX;
 		this.maxCamY = maxCamY;
+		id = QGameState.generateSceneId();
 		actorStates = new TreeMap<Integer, QActorState>();
 		sceneryStates = new TreeMap<Integer, QSceneryState>();
 		interactableStates = new ArrayList<QInteractableState>();
@@ -70,12 +72,8 @@ public class QSceneState {
 		 *		 Maybe the extra space is from the window frame?
 		 */		 
 		QInteractableState foundActor = findInteractableByLocation(x + camState.getX() - 3, y + camState.getY() - 25);
-		
-//		System.out.println(x + ", " + y);
-		
+			
 		if(foundActor != null) {
-//			System.out.println("Actor coords: " + foundActor.getX() + ", " + foundActor.getY() 
-//							 + "\n" + (foundActor.getX() + foundActor.getWidth()) + ", " + (foundActor.getY() + foundActor.getHeight()));
 			foundActor.onUse();
 		}
 	}
@@ -110,8 +108,6 @@ public class QSceneState {
 			playerState.walk(direction);
 			playerState.jump(direction);
 		}
-		
-//		playerState.onCommand(tickTime, direction);
 	}
 	
 	public void resolveSceneryMovement(int tickTime, QDirection direction) {
@@ -153,6 +149,10 @@ public class QSceneState {
 		}
 		
 		return foundActor;
+	}
+	
+	public int getSceneId() {
+		return id;
 	}
 	
 	//////////////

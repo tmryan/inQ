@@ -1,139 +1,21 @@
 package ryan.tom.inq.gfx;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+/**
+ * This class will manage all loading and saving of the game state.
+ * 
+ * @author Thomas Ryan
+ *
+ */
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
-
-@SuppressWarnings("serial")
-public class QGameController  {
-	private QScene animTestScene;
-	private QGameState gameState;
-	private QGraphics gfx;
-	private static long lastUpdate;
-	private QResourceManager resMan;
-	private QMouseManager mouseMan;
-	private QKeyboardManager keyMan;
-	private QGameSettings gameSettings;
+// Note: Implementation is incomplete
+public class QStateManager {
 	
-	// Debugging states
-	private boolean isPathingOverlayEnabled;
-	private boolean ispBoundsEnabled;
-	
-	public QGameController(QResourceManager resMan, QGameSettings gameSettings) {
-		mouseMan = new QMouseManager();
-		keyMan = new QKeyboardManager();
-		this.resMan = resMan;
-		gameState = new QGameState(mouseMan, keyMan);
-		gfx = new QGraphics(gameState);
+	public QStateManager() {
 		
-		// Note: QGameSettings has static methods for the time being
-		this.gameSettings = gameSettings;
-		
-		// Note: State loading will be abstracted eventually
-		// Initializing game components and loading resources
-		init();
 	}
 	
-	public void init() {
-//		setSize(QGameSettings.getWinWidth(), QGameSettings.getWinHeight());
-//		setTitle("inQ Engine Test");
-//		
-//		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//		setLocationRelativeTo(null);
-//		setResizable(false);
-//		setVisible(true);
-		
-		///////////////
-		// Controller
-		////////////
-		
-		// Adding keyboard listener
-		gfx.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				keyMan.setKeyState(e.getKeyCode(), true);
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				keyMan.setKeyState(e.getKeyCode(), false);
-			}
-		});
-		
-		// Adding mouse click controller
-		gfx.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(SwingUtilities.isLeftMouseButton(e)) {
-					gameState.resolveMouseClick(e.getX(), e.getY());
-				}
-			}
-		});
-		
-		gfx.addMouseMotionListener(new MouseAdapter() {
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				mouseMan.setCurrentMousePosition(e.getX(), e.getY());
-			}
-		});
-		
-		loadGameState();
-		
-		// Note: This will change later once graphics and scenes are fully abstracted
-		// Adding current scene
-//		add(animTestScene, BorderLayout.CENTER);
-
-		// Initializing debugging tools
-		isPathingOverlayEnabled = false;
-		ispBoundsEnabled = false;
-		new DebuggerWindow();
-		
-		// Starting game loop
-		startGameLoop();
-	}
-	
-	public void startGameLoop() {
-		// Note: Jerkiness as camera pans, need to tighten up the graphics
-		int msDelay = 16;
-		boolean run = true;
-		long currentTime = 0;
-		int deltaTime = 0;
-		lastUpdate = 0;
-		
-		/*
-		 * Need game tick and art tick?
-		 */
-		
-		while(run) {
-			// Note: CPU is over used, throttle loop
-			currentTime = System.nanoTime() / 1000000;
-			deltaTime = (int) (currentTime - lastUpdate);
-
-			if(deltaTime > msDelay) {
-				// debug
-				animTestScene.enablePathingOverlay(isPathingOverlayEnabled);
-				animTestScene.enableBoundsOverlay(ispBoundsEnabled);
-				// update models
-				gameState.onTick(deltaTime);
-				// update views
-				gfx.updateView(deltaTime);
-				gfx.render();
-				lastUpdate = currentTime;
-			}
-		}
-	}
-	
-	// Loading resources prior to starting the game
-	public void loadGameState() {
+	// Note: This will eventually load a specified state
+	public void loadGameState(QResourceManager resMan) {
 		// Lots of data input overhead here! :( 
 		// Maybe implement a buildStateFromActor() factory method?
 
@@ -178,16 +60,12 @@ public class QGameController  {
 		gameState.addSceneState(testSceneState);
 		animTestScene.attachSceneState(testSceneState);
 		testSceneState.attachPathingMap(testSceneMap);
-		
-		// Note: Need a better way to initialize and add resources
+		// Note: Need a smooth way to initialize and add resources
+		animTestScene.addCamera(cam);
 		gameState.attachCameraState(camState);
 		gameState.loadScene(0);
-		gameState.addPlayerState(pOneState);
-
 		animTestScene.addPlayer(peegOne);
-
-		gfx.addCamera(cam);
-		gfx.addScene(animTestScene, testSceneState.getSceneId());
+		gameState.addPlayerState(pOneState);
 		
 		// Adding scenery		
 		QSceneryActor sun = new QSceneryActor(400, 15, resMan.getImage("sun.png"), resMan);
@@ -259,42 +137,4 @@ public class QGameController  {
 		testSceneState.addInteractableState(boxState);
 	}
 	
-	//////////////
-	// Debugging
-	///////////
-	
-	// Note: Move debug component drawing to UI class and create QDebugTools class
-	class DebuggerWindow {
-		public DebuggerWindow() {
-			JFrame debugFrame = new JFrame();
-			
-			JPanel btnPane = new JPanel();
-			
-			JButton pathingBtn = new JButton("pathing overlay");
-			pathingBtn.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					isPathingOverlayEnabled = !isPathingOverlayEnabled;
-				}
-				
-			});
-			btnPane.add(pathingBtn);
-			
-			JButton pBoundsBtn = new JButton("player bounds");
-			pBoundsBtn.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					ispBoundsEnabled = !ispBoundsEnabled;
-				}
-				
-			});
-			btnPane.add(pBoundsBtn);
-			
-			debugFrame.add(btnPane);
-			debugFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			debugFrame.setTitle("Debug Tools");
-			debugFrame.pack();
-			debugFrame.setVisible(true);
-		}
-	}
 }

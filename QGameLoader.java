@@ -4,6 +4,7 @@ import ryan.tom.inq.gfx.QGameController;
 import ryan.tom.inq.gfx.QGameSettings;
 import ryan.tom.inq.gfx.QResourceLoader;
 import ryan.tom.inq.gfx.QResourceManager;
+import ryan.tom.inq.gfx.QStateManager;
 
 /**
  * This class serves as the entry point into the program. 
@@ -24,9 +25,13 @@ public class QGameLoader {
 		// Loading resources
 		QResourceManager resMan = new QResourceManager();
 		new QResourceLoader().loadResources(resMan);
-				
+			
 		// Loading main menu
-				
+		// Note: May need to abstract further since returning to the main menu cannot be done from outside of this class
+		
+		// Loading current game state
+		QStateManager stateMan = new QStateManager();
+		
 		/* 
 		 * Note: Controller instantiation needs to happen once QGraphics is loaded for menu UI to draw
 		 * 		 Maybe instantiate QGraphics and QGameController here, then pass gfx reference to controller?
