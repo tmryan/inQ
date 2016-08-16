@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 public enum QDirection {
 	N(0,-1),

@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 public class QSimplePopMover extends QAbstractMover {
 	public QSimplePopMover() {

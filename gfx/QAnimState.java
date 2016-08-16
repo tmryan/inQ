@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 public enum QAnimState {
 	IDLE(0, "idle", true),

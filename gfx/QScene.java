@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -14,8 +14,8 @@ public class QScene {
 	private QCameraActor camera;
 	
 	// Note: Need priority queue for discerning draw order?
-	// 		 or separate player and other important actors from actor map and draw last?
-	//		 Only need priority for actors that can change their order...
+	// 		 Or separate player and other important actors from actor map and draw last?
+	//		 May only need priority for actors that can change their order
 	TreeMap<Integer, QSceneryActor> scenery;
 	TreeMap<Integer, QActor> actors;
 	QActor player;
@@ -28,7 +28,7 @@ public class QScene {
 		this.resMan = resMan;
 		this.mouseMan = mouseMan;
 		sceneState = null;
-		backGroundImg = new QScenery(0, 0, resMan.getImage("hills2.png"));
+		backGroundImg = new QScenery(0, 0, resMan.getImage("hills2.png"), 0);
 		sceneWidth = backGroundImg.getWidth();
 		sceneHeight = backGroundImg.getHeight();
 		player = null;
@@ -40,7 +40,63 @@ public class QScene {
 		isPathingOverlayEnabled = false;
 		ispBoundsEnabled = false;
 	}
+	
+	///////////////
+	// updateView()
+	////////////
+	
+	public void updateView(long tickTime) {	
+		camera.updateView(tickTime);
 		
+		for(Integer id : scenery.keySet()) {
+			scenery.get(id).updateView(tickTime);
+		}
+		
+		for(int id : actors.keySet()) {
+			actors.get(id).updateView(tickTime);
+		}
+		
+		player.updateView(tickTime);
+	}
+	
+	/////////
+	// draw()
+	//////
+	
+	public void draw(Graphics2D g2) {
+		// Drawing background first
+		backGroundImg.draw(g2);
+		
+		// Drawing mid ground scenery
+		for(Integer id : scenery.keySet()) {
+			scenery.get(id).draw(g2);
+		}
+		
+		// Drawing actors
+		for(Integer id : actors.keySet()) {
+			actors.get(id).draw(g2);
+		}
+		
+		player.draw(g2);
+		
+		// Drawing debug overlays last
+		if(isPathingOverlayEnabled) {
+			sceneState.drawPathingOverlay(g2);
+		}
+		
+		if(ispBoundsEnabled) {
+			player.drawActorBounds(g2);
+			
+			for(Integer id : actors.keySet()) {
+				actors.get(id).drawActorBounds(g2);
+			}
+		}
+	}
+	
+	/////////////////
+	// Other Methods
+	//////////////
+	
 	public void attachSceneState(QSceneState sceneState) {
 		this.sceneState = sceneState;
 	}
@@ -61,39 +117,9 @@ public class QScene {
 	public void addCamera(QCameraActor cameraActor) {
 		camera = cameraActor;
 	}
-	
-	public void draw(Graphics2D g2) {
-		// Drawing background first
-		backGroundImg.draw(g2);
 		
-		// Drawing mid ground scenery
-		for(Integer id : scenery.keySet()) {
-			scenery.get(id).draw(g2);
-		}
-		
-		// Drawing actors
-		for(Integer id : actors.keySet()) {
-			actors.get(id).draw(g2);
-		}
-		
-		player.draw(g2);
-		
-		// Drawing debugging overlays last
-		if(isPathingOverlayEnabled) {
-			sceneState.drawPathingOverlay(g2);
-		}
-		
-		if(ispBoundsEnabled) {
-			player.drawActorBounds(g2);
-			
-			for(Integer id : actors.keySet()) {
-				actors.get(id).drawActorBounds(g2);
-			}
-		}
-	}
-	
 	public void setBackgroundImg(BufferedImage backGroundImg) {
-		this.backGroundImg = new QScenery(0, 0, backGroundImg);
+		this.backGroundImg = new QScenery(0, 0, backGroundImg, 0);
 	}
 	
 	public int getSceneWidth() {
@@ -107,25 +133,7 @@ public class QScene {
 	public QCameraActor getCamera() {
 		return camera;
 	}
-		
-	//////////////
-	// updateView
-	///////////
-	
-	public void updateView(long tickTime) {	
-		camera.updateView(tickTime);
-		
-		for(Integer id : scenery.keySet()) {
-			scenery.get(id).updateView(tickTime);
-		}
-		
-		for(int id : actors.keySet()) {
-			actors.get(id).updateView(tickTime);
-		}
-		
-		player.updateView(tickTime);
-	}
-	
+			
 	/////////////
 	// Debugging
 	//////////

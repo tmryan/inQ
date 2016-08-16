@@ -1,10 +1,10 @@
-package ryan.tom.inq;
+package tryan.inq;
 
-import ryan.tom.inq.gfx.QGameController;
-import ryan.tom.inq.gfx.QGameSettings;
-import ryan.tom.inq.gfx.QResourceLoader;
-import ryan.tom.inq.gfx.QResourceManager;
-import ryan.tom.inq.gfx.QStateManager;
+import tryan.inq.gfx.QGameController;
+import tryan.inq.gfx.QGameSettings;
+import tryan.inq.gfx.QResourceLoader;
+import tryan.inq.gfx.QResourceManager;
+import tryan.inq.gfx.QStateManager;
 
 /**
  * This class serves as the entry point into the program. 

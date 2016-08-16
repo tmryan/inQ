@@ -1,11 +1,11 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 /*
- * Note: QActor coordinates are in screen space coordinates
+ * Note: QActor coordinates should be in screen space coordinates
  */
 public class QActor {
 	private int id;
@@ -22,15 +22,15 @@ public class QActor {
 	private QAnimMap anims;
 	private QAnimation.AnimMapIterator animIter;
 
-	public QActor(int x, int y, BufferedImage img, QResourceManager resMan) {
+	public QActor(int x, int y, BufferedImage img, QResourceManager resMan, int layer) {
 		id = QGameState.generateActorId();
 		this.defaultImg = img;
 		this.x = x;
 		this.y = y;
 		width = img.getWidth();
 		height = img.getHeight();
-		// Note: Layer will eventually be used for draw order
-		layer = 1;
+		// Note: Layer may eventually be used for draw order
+		this.layer = layer;
 		this.resMan = resMan;
 		actorState = null;
 		animState = QAnimState.IDLE;
@@ -38,15 +38,15 @@ public class QActor {
 		animIter = null;
 	}
 	
-	public QActor(int x, int y, int width, int height, BufferedImage img, QResourceManager resMan) {
+	public QActor(int x, int y, int width, int height, BufferedImage img, QResourceManager resMan, int layer) {
 		id = QGameState.generateActorId();
 		this.defaultImg = img;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		// Note: Layer will eventually be used for draw order
-		layer = 1;
+		// Note: Layer may eventually be used for draw order
+		this.layer = layer;
 		this.resMan = resMan;
 		actorState = null;
 		animState = QAnimState.IDLE;
@@ -83,14 +83,6 @@ public class QActor {
 			animIter = anims.getAnimSetIerator(animState.getAnimName());
 		}
 	}
-	
-	// Note: Leaving this here for now since I have a feeling something like this will be needed
-//	public void playAnimationOnce(QAnimState animState) {
-//		QAnimation.AnimMapIterator iter = anims.getAnimSetIerator(animState.getAnimName());
-//		while(iter.hasNextFrame()) {
-//			animQueue.add(iter.getNextFrame());
-//		}
-//	}
 	
 	public void draw(Graphics2D g2) {
 		if(getAnimIterator() != null && animIter.hasNextFrame()) {
@@ -160,6 +152,10 @@ public class QActor {
 	
 	public QResourceManager getResMan() {
 		return resMan;
+	}
+	
+	public int getLayer() {
+		return layer;
 	}
 	
 	//////////////

@@ -1,6 +1,6 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class QGameState {
 	private static int nextActorId;
@@ -9,8 +9,7 @@ public class QGameState {
 	private QKeyboardManager keyMan;
 	private QPlayerState playerState;
 	private QCameraState camState;
-	// Note: If there are enough levels, a tree might be better for faster searching
-	private ArrayList<QSceneState> sceneStates;
+	private HashMap<Integer, QSceneState> sceneStates;
 	private int currentScene;
 	
 	public QGameState(QMouseManager mouseMan, QKeyboardManager keyMan) {
@@ -20,7 +19,7 @@ public class QGameState {
 		this.keyMan = keyMan;
 		playerState = null;
 		camState = null;
-		sceneStates = new ArrayList<QSceneState>();
+		sceneStates = new HashMap<Integer, QSceneState>();
 		currentScene = 0;
 	}
 	
@@ -39,11 +38,6 @@ public class QGameState {
 	 */
 	public void resolveMouseClick(int x, int y) {
 		sceneStates.get(currentScene).resolveMouseClick(x, y);
-	}
-	
-	// Note: Sometimes this causes an exception... index out of bounds index 0 size 0
-	public void resolveMouseMove(int x, int y, boolean mouseEntered) {
-		// Do something on mouse move
 	}
 	
 	public void resolveMousePosition() {
@@ -86,7 +80,8 @@ public class QGameState {
 	}
 	
 	public void addSceneState(QSceneState sceneState) {
-		sceneStates.add(sceneState);
+		System.out.println(sceneState.getSceneId());
+		sceneStates.put(sceneState.getSceneId(), sceneState);
 	}
 	
 	public void attachCameraState(QCameraState cameraState) {

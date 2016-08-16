@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 public class QPhysics {
 	// Note: 18 feels good right now, but need falling to stop while jumping

@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -6,11 +6,13 @@ import java.awt.image.BufferedImage;
 public class QScenery {
 	private int x;
 	private int y;
-	BufferedImage img;
+	private int layer;
+	private BufferedImage img;
 	
-	public QScenery(int x, int y, BufferedImage img) {
+	public QScenery(int x, int y, BufferedImage img, int layer) {
 		this.x = x;
 		this.y = y;
+		this.layer = layer;
 		this.img = img;
 	}
 	
@@ -24,5 +26,9 @@ public class QScenery {
 	
 	public int getHeight() {
 		return img.getHeight();
+	}
+	
+	public int getLayer() {
+		return layer;
 	}
 }

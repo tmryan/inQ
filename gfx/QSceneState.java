@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -91,6 +91,7 @@ public class QSceneState {
 	
 	public void resolveCameraMovement(int tickTime, QDirection direction) {
 		camState.onCommand(tickTime, direction);
+		System.out.println(camState.getX() + " " + camState.getY());
 	}
 	
 	// Note: This could be abstracted into game mode movement classes like side-scrolling, top-down, or isometric

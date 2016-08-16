@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 public enum QMoverType {
 	WALK(0, "walk"),
@@ -20,4 +20,5 @@ public enum QMoverType {
 			
 	public int moverType() { return type; }
 	public String moverName() { return name; }
+	
 }

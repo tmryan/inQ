@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 public interface QMoverModule {
 	public boolean move(QDirection direction);

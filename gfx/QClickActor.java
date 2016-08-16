@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 //package ryan.tom.movindudes;
 //
 //import java.awt.image.BufferedImage;

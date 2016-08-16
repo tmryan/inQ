@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -55,7 +55,7 @@ public class QGraphics extends Canvas {
 	
 	public void render() {
 		BufferedImage bImg = getGraphicsConfiguration().createCompatibleImage(scenes.get(gState.getCurrentSceneID()).getSceneWidth(), 
-																			  scenes.get(gState.getCurrentSceneID()).getSceneHeight());
+				scenes.get(gState.getCurrentSceneID()).getSceneHeight());
 		Graphics2D bg2 = bImg.createGraphics();
 		Graphics2D g2 = null;
 		QScene scene = scenes.get(gState.getCurrentSceneID());
@@ -68,9 +68,12 @@ public class QGraphics extends Canvas {
 				g2.setColor(Color.BLACK);
 				g2.fillRect(0, 0, scene.getSceneWidth(), scene.getSceneWidth());
 
+				// Drawing scene to BufferedImage
 				scenes.get(gState.getCurrentSceneID()).draw(bg2);
 				
-				g2.drawImage(bImg, null, scene.getCamera().getX(), scene.getCamera().getY());
+				// Note: Find out why coordinate space is flipped here
+				// Copying area of scene inside camera viewport onto back buffer
+				g2.drawImage(bImg, null, scene.getCamera().getX() * -1, scene.getCamera().getY());
 			} finally {
 				g2.dispose();
 			}

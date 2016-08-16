@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 public class QCameraState extends QActorState {
 	// These camera bounds constraints will be set by the scene state as a new scene is loaded

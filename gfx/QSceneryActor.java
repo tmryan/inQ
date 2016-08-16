@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
  */
 public class QSceneryActor extends QActor {
 	
-	public QSceneryActor(int x, int y, BufferedImage img, QResourceManager resMan) {
-		super(x, y, img, resMan);
+	public QSceneryActor(int x, int y, BufferedImage img, QResourceManager resMan, int layer) {
+		super(x, y, img, resMan, layer);
 	}
 
 	@Override

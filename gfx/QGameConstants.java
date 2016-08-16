@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 public class QGameConstants {
 	public static final int UNIT_DISTANCE = 25;

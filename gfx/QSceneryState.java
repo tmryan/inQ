@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 public class QSceneryState extends QActorState {
 	// Note: Need directional flag here so objects can be set to move any direction as camera moves

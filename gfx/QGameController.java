@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -152,7 +152,7 @@ public class QGameController {
 		QPathingMap testSceneMap = new QPathingMap(resMan.getImage("bg.jpg").getWidth(), resMan.getImage("bg.jpg").getHeight());
 		
 		// Adding some mans to test
-		QActor peegOne = new QActor(450, 600, resMan.getImage("peegPlayer.png"), resMan);
+		QActor peegOne = new QActor(450, 600, resMan.getImage("peegPlayer.png"), resMan, 10);
 		QPlayerState pOneState = new QPlayerState(450, 600, 
 				resMan.getImage("peegPlayer.png").getWidth(), resMan.getImage("peegPlayer.png").getHeight(),
 				5, peegOne.getActorId(), testSceneMap, keyMan);
@@ -178,8 +178,9 @@ public class QGameController {
 		testSceneState.attachPathingMap(testSceneMap);
 		
 		gameState.attachCameraState(camState);
-		gameState.loadScene(0);
 		gameState.addPlayerState(pOneState);
+		// Hardcoding first scene load for now
+		gameState.loadScene(1);
 
 		animTestScene.addPlayer(peegOne);
 		animTestScene.addCamera(cam);
@@ -187,7 +188,7 @@ public class QGameController {
 		gfx.addScene(animTestScene, testSceneState.getSceneId());
 		
 		// Adding scenery		
-		QSceneryActor sun = new QSceneryActor(400, 15, resMan.getImage("sun.png"), resMan);
+		QSceneryActor sun = new QSceneryActor(400, 15, resMan.getImage("sun.png"), resMan, 1);
 		QSceneryState sunState = new QSceneryState(400, 15, 
 				resMan.getImage("sun.png").getWidth(), resMan.getImage("sun.png").getHeight(),
 				4, sun.getActorId());
@@ -195,7 +196,7 @@ public class QGameController {
 		animTestScene.addScenery(sun);
 		testSceneState.addSceneryState(sunState);
 		
-		QSceneryActor hills2 = new QSceneryActor(0, 0, resMan.getImage("hills2.png"), resMan);
+		QSceneryActor hills2 = new QSceneryActor(0, 0, resMan.getImage("hills2.png"), resMan, 2);
 		QSceneryState hills2State = new QSceneryState(0, 0, 
 				resMan.getImage("hills2.png").getWidth(), resMan.getImage("hills2.png").getHeight(),
 				1, hills2.getActorId());
@@ -204,7 +205,7 @@ public class QGameController {
 		animTestScene.addScenery(hills2);
 		testSceneState.addSceneryState(hills2State);
 		
-		QSceneryActor hills1 = new QSceneryActor(0, 0, resMan.getImage("hills1.png"), resMan);
+		QSceneryActor hills1 = new QSceneryActor(0, 0, resMan.getImage("hills1.png"), resMan, 2);
 		QSceneryState hills1State = new QSceneryState(0, 0, 
 				resMan.getImage("hills1.png").getWidth(), resMan.getImage("hills1.png").getHeight(),
 				0, hills1.getActorId());
@@ -213,7 +214,7 @@ public class QGameController {
 		animTestScene.addScenery(hills1);
 		testSceneState.addSceneryState(hills1State);
 		
-		QSceneryActor tree1 = new QSceneryActor(10, 0, resMan.getImage("tree1.png"), resMan);
+		QSceneryActor tree1 = new QSceneryActor(10, 0, resMan.getImage("tree1.png"), resMan, 3);
 		QSceneryState tree1State = new QSceneryState(10, 0, 
 				resMan.getImage("tree1.png").getWidth(), resMan.getImage("tree1.png").getHeight(),
 				0, tree1.getActorId());
@@ -221,7 +222,7 @@ public class QGameController {
 		animTestScene.addScenery(tree1);
 		testSceneState.addSceneryState(tree1State);
 		
-		QSceneryActor tree2 = new QSceneryActor(800, 0, resMan.getImage("tree1.png"), resMan);
+		QSceneryActor tree2 = new QSceneryActor(800, 0, resMan.getImage("tree1.png"), resMan, 3);
 		QSceneryState tree2State = new QSceneryState(800, 0, 
 				resMan.getImage("tree1.png").getWidth(), resMan.getImage("tree1.png").getHeight(),
 				0, tree2.getActorId());
@@ -229,7 +230,7 @@ public class QGameController {
 		animTestScene.addScenery(tree2);
 		testSceneState.addSceneryState(tree2State);
 		
-		QSceneryActor rocks = new QSceneryActor(500, 400, resMan.getImage("rocks.png"), resMan);
+		QSceneryActor rocks = new QSceneryActor(500, 400, resMan.getImage("rocks.png"), resMan, 3);
 		QSceneryState rocksState = new QSceneryState(500, 400, 
 				resMan.getImage("rocks.png").getWidth(), resMan.getImage("rocks.png").getHeight(),
 				0, rocks.getActorId());
@@ -237,7 +238,7 @@ public class QGameController {
 		animTestScene.addScenery(rocks);
 		testSceneState.addSceneryState(rocksState);
 		
-		QSceneryActor rocks2 = new QSceneryActor(1200, 455, resMan.getImage("rocks.png"), resMan);
+		QSceneryActor rocks2 = new QSceneryActor(1200, 455, resMan.getImage("rocks.png"), resMan, 3);
 		QSceneryState rocks2State = new QSceneryState(1200, 455, 
 				resMan.getImage("rocks.png").getWidth(), resMan.getImage("rocks.png").getHeight(),
 				0, rocks2.getActorId());
@@ -246,7 +247,7 @@ public class QGameController {
 		testSceneState.addSceneryState(rocks2State);
 		
 		// Testing interactive actors
-		QInteractableActor box = new QInteractableActor(750, 600, resMan.getImage("clickyTest.png"), resMan);
+		QInteractableActor box = new QInteractableActor(750, 600, resMan.getImage("clickyTest.png"), resMan, 3);
 		QInteractableState boxState = new QInteractableState(750, 600, 
 				resMan.getImage("clickyTest.png").getWidth(), resMan.getImage("clickyTest.png").getHeight(),
 				box.getActorId());

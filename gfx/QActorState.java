@@ -1,4 +1,4 @@
-package ryan.tom.inq.gfx;
+package tryan.inq.gfx;
 
 /*
  * Note: QActorState coordinates should be in game space units
