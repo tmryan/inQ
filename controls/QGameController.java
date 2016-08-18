@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import tryan.inq.event.QAreaTrigger;
+import tryan.inq.event.QGameEvent;
+import tryan.inq.event.QTimedEvent;
 import tryan.inq.gfx.QActor;
 import tryan.inq.gfx.QAnimMap;
 import tryan.inq.gfx.QAnimation;
@@ -21,7 +24,7 @@ import tryan.inq.gfx.QGraphics;
 import tryan.inq.gfx.QInteractableActor;
 import tryan.inq.gfx.QScene;
 import tryan.inq.gfx.QSceneryActor;
-import tryan.inq.gfx.QAnimation.AnimFrame;
+import tryan.inq.gfx.QUserInterface;
 import tryan.inq.mobility.QCameraMover;
 import tryan.inq.mobility.QFallingMover;
 import tryan.inq.mobility.QMoverType;
@@ -47,9 +50,10 @@ public class QGameController {
 	private QMouseManager mouseMan;
 	private QKeyboardManager keyMan;
 	private QGameSettings gameSettings;
-	private QGraphics gfx;	
+	private QGraphics gfx;
+	private QUserInterface ui;
 		
-	// Debugging states
+	// Debugging states here for now
 	private boolean isPathingOverlayEnabled;
 	private boolean ispBoundsEnabled;
 	
@@ -104,9 +108,10 @@ public class QGameController {
 			}
 		});
 		
+		// Note: This is moving to QStateManager soon
 		loadGameState();
 		
-		// Initializing debugging tools
+		// Initializing debugging tools, moving to QUserInterface soon
 		isPathingOverlayEnabled = false;
 		ispBoundsEnabled = false;
 		new DebuggerWindow();
@@ -123,16 +128,17 @@ public class QGameController {
 		int msDelay = 16;
 		boolean run = true;
 		long currentTime = 0;
-		int deltaTime = 0;
+		long deltaTime = 0;
+		int frames = 0;
+		int totalTicks = 0;
 		lastUpdate = 0;
 		
 		// Note: Need game tick and art tick? 		
 		while(run) {	
-			// Note: CPU is over used, throttle loop
-			currentTime = System.nanoTime() / 1000000;
+			// Note: CPU may be over used, throttle loop?
+			currentTime = System.nanoTime() / 1000000L;
 			// No noticeable difference with currentTime = System.nanoTime() >> 20;
 			deltaTime = (int) (currentTime - lastUpdate);
-
 			// Note: Track FPS and add frame counter
 			if(deltaTime > msDelay) {
 				// Manage debug flags, temp solution
@@ -146,13 +152,25 @@ public class QGameController {
 				gfx.updateView(deltaTime);
 				gfx.render();
 				
-				// Track time
+				// Track FPS per 1000 ms
+				if(deltaTime > 1000) {
+					frames++;
+					// Note: UI needs an FPS overlay
+					// Set current FPS value to frames here
+				} else {
+					frames++;
+				}
+				
+				// Note: May need to track both gfx update and state updates at some point
+				// Track update time
 				lastUpdate = currentTime;
+				
+				// Incrementing game tick counter
+				totalTicks++;
 			}
 		}
 	}
 	
-	// Loading game state
 	public void loadGameState() {		
 		/*
 		 * Note: Need a better way to initialize and load game states
@@ -285,6 +303,26 @@ public class QGameController {
 		animTestScene.addActor(box);
 		testSceneState.addActorState(boxState);
 		testSceneState.addInteractableState(boxState);
+		
+		// Adding a test area trigger
+		QAreaTrigger trigger = new QAreaTrigger(600, 595, 100, 100, true);
+		trigger.addGameEvent(new QGameEvent(1) {
+			@Override
+			public void playEvent() {
+				System.out.println("It's a trigger! :V");
+			}
+		});
+		testSceneState.addAreaTrigger(trigger);
+		
+		// Adding a test event timer
+		QTimedEvent timedEvent = new QTimedEvent(5000, true);
+		timedEvent.addGameEvent(new QGameEvent(1) {
+			@Override
+			public void playEvent() {
+				System.out.println("Time is up!");
+			}
+		});
+		testSceneState.addTimedEvent(timedEvent);
 	}
 	
 	//////////////
@@ -310,11 +348,9 @@ public class QGameController {
 			
 			JButton pBoundsBtn = new JButton("player bounds");
 			pBoundsBtn.addActionListener(new ActionListener() {
-
 				public void actionPerformed(ActionEvent e) {
 					ispBoundsEnabled = !ispBoundsEnabled;
 				}
-				
 			});
 			btnPane.add(pBoundsBtn);
 			

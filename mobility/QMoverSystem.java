@@ -39,7 +39,7 @@ public class QMoverSystem {
 	
 	// Note: May need to change how timings are done to add pausing effects
 	// Note: Need to implement interrupts later as well
-	public void onTick(int tickTime) {
+	public void onTick(long tickTime) {
 		tDelta += tickTime;
 	}
 	

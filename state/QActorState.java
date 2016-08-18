@@ -28,7 +28,7 @@ public class QActorState {
 		currentAnimState = QAnimState.IDLE;
 	}
 
-	public void onTick(int tickTime, QDirection direction) {
+	public void onTick(long tickTime, QDirection direction) {
 		// Note: Physics does falling right now, but I think this system needs some redesign
 		// Note: Shouldn't be able to issue walk commands while falling, can cause out of grid bounds exceptions
 		// Note: AnimStates are a mess. Fix it!
@@ -58,27 +58,11 @@ public class QActorState {
 		// Note: May end up not needing this one
 	}
 	
-	public void walk(QDirection direction) {
-		if(moverSys.move(QMoverType.WALK ,direction)) {
-			currentAnimState = QAnimState.WALK;
-		}
-	}
+	public void walk(QDirection direction) {}
 	
-	// Note: Move methods like these need to be overridden in subclasses
-	public void jump(QDirection direction) {
-		if(moverSys.move(QMoverType.JUMP, direction)) {
-			currentAnimState = QAnimState.JUMP;
-		}
-	}
+	public void jump(QDirection direction) {}
 	
-	public void physics() {
-		if(moverSys.getMoverModule(QMoverType.FALL) != null) {
-			if(moverSys.move(QMoverType.FALL ,QDirection.S)) {
-				// Note: This doesn't work right now because animation states...
-//				currentAnimState = QAnimState.FALL;
-			}
-		}
-	}
+	public void physics() {}
 	
 	public boolean containsCoords(int x2, int y2) {
 		return bounds.containsCoords(x2, y2);

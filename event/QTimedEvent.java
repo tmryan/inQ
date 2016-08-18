@@ -1,11 +1,42 @@
 package tryan.inq.event;
 
 public class QTimedEvent {
-	
-	public QTimedEvent() {
+	private int interval;
+	private int tDelta;
+	private QGameEvent gameEvent;
+	private boolean isOneShot;
 
+	public QTimedEvent(int interval, boolean isOneShot) {
+		this.interval = interval;
+		tDelta = 0;
+		gameEvent = null;
+		this.isOneShot = isOneShot;
 	}
 
-	// Note: This class needs to compare time passed and creates a QActionEvent object if so
+	public boolean isTimeExpired(long tickTime) {
+		boolean timerExpired = false;
+		// WHY TIMER SO FAST????
+		tDelta += tickTime;
+
+		if(tDelta > interval) {
+			timerExpired = true;
+			tDelta = 0;
+		}
+		
+		return timerExpired;
+	}
+	
+	// Note: Need to allow for multiple events at some point
+	public void addGameEvent(QGameEvent gameEvent) {
+		this.gameEvent = gameEvent;
+	}
+	
+	public QGameEvent getGameEvent() {
+		return gameEvent;
+	}
+	
+	public boolean isOneShot() {
+		return isOneShot;
+	}
 	
 }

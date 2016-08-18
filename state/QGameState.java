@@ -49,7 +49,7 @@ public class QGameState {
 	}
 		
 	// Note: This system could stand to be more elegant
-	public QDirection resolveKeyCommands(int tickTime) {
+	public QDirection resolveKeyCommands(long tickTime) {
 		QDirection direction = null;
 		
 		// { W=0, S=1, A=2, D=3, SPACE=4, Q=5, E=6 }
@@ -104,10 +104,13 @@ public class QGameState {
 		return sceneStates.get(currentScene).getSceneId();
 	}
 	
-	public void onTick(int tickTime) {
-		QDirection direction = resolveKeyCommands(tickTime);
-		
-		resolveMousePosition();
-		sceneStates.get(currentScene).onTick(tickTime, direction);
+	public void onTick(long tickTime) {
+		// Note: Temporary solution to high initial value from System.nanotime()
+		if(tickTime < 1000) {
+			QDirection direction = resolveKeyCommands(tickTime);
+			
+			resolveMousePosition();
+			sceneStates.get(currentScene).onTick(tickTime, direction);
+		}
 	}
 }

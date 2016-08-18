@@ -18,7 +18,7 @@ public class QInteractableState extends QActorState {
 	}
 	
 	@Override
-	public void onTick(int tickTime, QDirection direction) {
+	public void onTick(long tickTime, QDirection direction) {
 		// Do Stuff
 	}
 	

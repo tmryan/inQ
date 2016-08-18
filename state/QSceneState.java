@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 import tryan.inq.event.QAreaTrigger;
+import tryan.inq.event.QGameEventManager;
 import tryan.inq.event.QTimedEvent;
 import tryan.inq.mobility.QCoords;
 import tryan.inq.mobility.QDirection;
@@ -28,8 +29,7 @@ public class QSceneState {
 	private ArrayList<QInteractableState> interactableStates;
 	private QInteractableState highlightedActor;
 	private QPathingMap pathingMap;
-	private ArrayList<QAreaTrigger> areaTriggers;
-	private ArrayList<QTimedEvent> timedEvents;
+	private QGameEventManager eventMan;
 	
 	public QSceneState(int width, int height, QPlayerState playerState, int minCamX, int minCamY, int maxCamX, int maxCamY) {
 		sceneWidth = width;
@@ -46,11 +46,10 @@ public class QSceneState {
 		this.playerState = playerState;
 		this.camState = null;
 		pathingMap = null;
-		areaTriggers = new ArrayList<QAreaTrigger>();
-		timedEvents = new ArrayList<QTimedEvent>();
+		eventMan = new QGameEventManager();
 	}
 	
-	public void onTick(int tickTime, QDirection direction) {
+	public void onTick(long tickTime, QDirection direction) {
 		for(int id : sceneryStates.keySet()) {
 			sceneryStates.get(id).onTick(tickTime, direction);
 		}
@@ -64,6 +63,11 @@ public class QSceneState {
 		camState.onTick(tickTime, direction);
 		
 		// Note: Check all area triggers and timed events here
+		eventMan.checkAreaTriggers(playerState);
+		eventMan.checkTimedEvents(tickTime);
+		
+		// Play queued game events
+		playNextEvent();
 	}
 	
 	public void attachCameraState(QCameraState camState) {
@@ -88,7 +92,11 @@ public class QSceneState {
 	}
 	
 	public void addAreaTrigger(QAreaTrigger areaTrigger) {
-		areaTriggers.add(areaTrigger);
+		eventMan.addAreaTrigger(areaTrigger);
+	}
+	
+	public void addTimedEvent (QTimedEvent timedEvent) {
+		eventMan.addTimedEvent(timedEvent);
 	}
 	
 	public void attachPathingMap(QPathingMap pathingMap) {
@@ -118,12 +126,12 @@ public class QSceneState {
 		}
 	}
 	
-	public void resolveCameraMovement(int tickTime, QDirection direction) {
+	public void resolveCameraMovement(long tickTime, QDirection direction) {
 		camState.onCommand(tickTime, direction);
 	}
 	
 	// Note: This could be abstracted into game mode movement classes like side-scrolling, top-down, or isometric
-	public void resolvePlayerMovement(int tickTime, QDirection direction) {
+	public void resolvePlayerMovement(long tickTime, QDirection direction) {
 		if(direction.equals(QDirection.E) || direction.equals(QDirection.W)) {
 			playerState.walk(direction);
 		} else if(direction.equals(QDirection.N)) {
@@ -134,7 +142,7 @@ public class QSceneState {
 		}
 	}
 	
-	public void resolveSceneryMovement(int tickTime, QDirection direction) {
+	public void resolveSceneryMovement(long tickTime, QDirection direction) {
 		// Note: On the lookout for a better solution to the camera+scenery movement linking problem
 		if(camState.isMoving()) {
 			for(int id : sceneryStates.keySet()) {
@@ -142,7 +150,15 @@ public class QSceneState {
 			}
 		}
 	}
-		
+	
+	public void playNextEvent() {
+		// Note: Should these events be executed one per tick or all? Set a limit? Use greedy?
+		if(eventMan.hasNextEvent()) {
+			// QUEUE IS EMPTY WHYYYYY?!
+			eventMan.getNextEvent().playEvent();
+		}
+	}
+	
 	public QInteractableState findInteractableByLocation(int x, int y) {
 		QInteractableState foundActor = null;
 		
