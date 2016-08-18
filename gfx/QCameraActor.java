@@ -1,5 +1,9 @@
 package tryan.inq.gfx;
 
+import tryan.inq.overhead.QGameSettings;
+import tryan.inq.state.QCameraState;
+import tryan.inq.state.QGameState;
+
 public class QCameraActor {
 	private int id;
 	private int x;

@@ -3,6 +3,9 @@ package tryan.inq.gfx;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import tryan.inq.overhead.QResourceManager;
+import tryan.inq.state.QInteractableState;
+
 public class QInteractableActor extends QActor {
 	
 	public QInteractableActor(int x, int y, BufferedImage img, QResourceManager resMan, int layer) {

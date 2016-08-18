@@ -12,6 +12,9 @@ import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import tryan.inq.overhead.QGameSettings;
+import tryan.inq.state.QGameState;
+
 @SuppressWarnings("serial")
 public class QGraphics extends Canvas {
 	private QGameState gState;

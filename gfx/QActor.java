@@ -5,6 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import tryan.inq.gfx.QAnimUtils.QTransformation;
+import tryan.inq.mobility.QDirection;
+import tryan.inq.overhead.QResourceManager;
+import tryan.inq.state.QActorState;
+import tryan.inq.state.QAnimState;
+import tryan.inq.state.QGameState;
 
 /*
  * Note: QActor coordinates should be in screen space coordinates

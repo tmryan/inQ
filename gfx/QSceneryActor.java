@@ -3,6 +3,8 @@ package tryan.inq.gfx;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import tryan.inq.overhead.QResourceManager;
+
 /*
  * Note: Need to abstract actors
  */
