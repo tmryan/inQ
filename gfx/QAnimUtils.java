@@ -8,9 +8,9 @@ public class QAnimUtils {
 	
 	private QAnimUtils() {}	
 	
-	public static BufferedImage performXFormation(int xFormId, BufferedImage img) {
+	public static BufferedImage performXFormation(QTransformation xFormId, BufferedImage img) {
 		switch(xFormId) {
-			case 1:
+			case FLIPX:
 				return flipImgHorizontal(img);
 			default:
 				break;

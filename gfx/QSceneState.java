@@ -21,6 +21,8 @@ public class QSceneState {
 	private ArrayList<QInteractableState> interactableStates;
 	private QInteractableState highlightedActor;
 	private QPathingMap pathingMap;
+	private ArrayList<QAreaTrigger> areaTriggers;
+//	private ArrayList<QTimedEvent> timedEvents; 
 	
 	public QSceneState(int width, int height, QPlayerState playerState, int minCamX, int minCamY, int maxCamX, int maxCamY) {
 		sceneWidth = width;
@@ -34,11 +36,26 @@ public class QSceneState {
 		sceneryStates = new TreeMap<Integer, QSceneryState>();
 		interactableStates = new ArrayList<QInteractableState>();
 		highlightedActor = null;
-		
 		this.playerState = playerState;
 		this.camState = null;
 		pathingMap = null;
+		areaTriggers = new ArrayList<QAreaTrigger>();
+	}
+	
+	public void onTick(int tickTime, QDirection direction) {
+		for(int id : sceneryStates.keySet()) {
+			sceneryStates.get(id).onTick(tickTime, direction);
+		}
 		
+		for(int id : actorStates.keySet()) {
+			actorStates.get(id).onTick(tickTime, direction);
+		}
+		
+		playerState.onTick(tickTime, direction);
+		
+		camState.onTick(tickTime, direction);
+		
+		// Note: Check all area triggers and timed events here
 	}
 	
 	public void attachCameraState(QCameraState camState) {
@@ -60,6 +77,10 @@ public class QSceneState {
 	public void addInteractableState(QInteractableState actor) {
 		interactableStates.add(actor);
 		actorStates.put(actor.getActorId(), actor);
+	}
+	
+	public void addAreaTrigger(QAreaTrigger areaTrigger) {
+		areaTriggers.add(areaTrigger);
 	}
 	
 	public void attachPathingMap(QPathingMap pathingMap) {
@@ -91,7 +112,6 @@ public class QSceneState {
 	
 	public void resolveCameraMovement(int tickTime, QDirection direction) {
 		camState.onCommand(tickTime, direction);
-		System.out.println(camState.getX() + " " + camState.getY());
 	}
 	
 	// Note: This could be abstracted into game mode movement classes like side-scrolling, top-down, or isometric
@@ -114,21 +134,7 @@ public class QSceneState {
 			}
 		}
 	}
-	
-	public void onTick(int tickTime, QDirection direction) {
-		for(int id : sceneryStates.keySet()) {
-			sceneryStates.get(id).onTick(tickTime, direction);
-		}
 		
-		for(int id : actorStates.keySet()) {
-			actorStates.get(id).onTick(tickTime, direction);
-		}
-		
-		playerState.onTick(tickTime, direction);
-		
-		camState.onTick(tickTime, direction);
-	}
-	
 	public QInteractableState findInteractableByLocation(int x, int y) {
 		QInteractableState foundActor = null;
 		

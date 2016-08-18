@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import tryan.inq.gfx.QAnimUtils.QTransformation;
+
 /*
  * Note: QActor coordinates should be in screen space coordinates
  */
@@ -14,6 +16,9 @@ public class QActor {
 	private int width;
 	private int height;
 	private int layer;
+	private int tDelta;
+	private int currentFrameLifetime;
+	private QAnimation.AnimFrame currentAnimFrame;
 	private BufferedImage defaultImg;
 	// Note: May not need resMan in this class
 	private QResourceManager resMan;
@@ -21,6 +26,13 @@ public class QActor {
 	private QAnimState animState;
 	private QAnimMap anims;
 	private QAnimation.AnimMapIterator animIter;
+	
+	/* 
+	 * Note: This will eventually be pulled from actor state on update and applied to animation frame timings
+	 * 		 for cases where the actor speed has increased or decreased and the anim speed needs to reflect 
+	 * 		 the change
+	 */
+	private double animSpeedMultiplier;
 
 	public QActor(int x, int y, BufferedImage img, QResourceManager resMan, int layer) {
 		id = QGameState.generateActorId();
@@ -31,11 +43,15 @@ public class QActor {
 		height = img.getHeight();
 		// Note: Layer may eventually be used for draw order
 		this.layer = layer;
+		tDelta = 0;
+		currentFrameLifetime = 0;
+		currentAnimFrame = null;
 		this.resMan = resMan;
 		actorState = null;
 		animState = QAnimState.IDLE;
 		anims = null;
 		animIter = null;
+		animSpeedMultiplier = 1.0;
 	}
 	
 	public QActor(int x, int y, int width, int height, BufferedImage img, QResourceManager resMan, int layer) {
@@ -47,15 +63,21 @@ public class QActor {
 		this.height = height;
 		// Note: Layer may eventually be used for draw order
 		this.layer = layer;
+		tDelta = 0;
+		currentFrameLifetime = 0;
+		currentAnimFrame = null;
 		this.resMan = resMan;
 		actorState = null;
 		animState = QAnimState.IDLE;
 		anims = null;
 		animIter = null;
+		animSpeedMultiplier = 1.0;
 	}
 	
 	// Update view from current model state
 	public void updateView(long tickTime) {
+		tDelta += tickTime;
+		
 		x = actorState.getX();
 		y = actorState.getY();
 		animState = actorState.getCurrentAnimState();
@@ -85,19 +107,33 @@ public class QActor {
 	}
 	
 	public void draw(Graphics2D g2) {
-		if(getAnimIterator() != null && animIter.hasNextFrame()) {
-			if(actorState.getDirection().equals(QDirection.E) || actorState.getDirection().equals(QDirection.NE)) {
-				g2.drawImage(animIter.getNextFrame(), null, x, y);
+		if(animIter != null && animIter.hasNextFrame()) {
+			if(tDelta < currentFrameLifetime) {
+				if(actorState.getDirection().equals(QDirection.E) || actorState.getDirection().equals(QDirection.NE)) {
+					g2.drawImage(currentAnimFrame.getImage(), null, x, y);
+				} else {
+					g2.drawImage(QAnimUtils.performXFormation(QTransformation.FLIPX, currentAnimFrame.getImage()), null, x, y);
+				}
 			} else {
-				g2.drawImage(QAnimUtils.flipImgHorizontal(animIter.getNextFrame()), null, x, y);
+				tDelta = 0;
+				currentAnimFrame = animIter.getNextFrame();
+				currentFrameLifetime = currentAnimFrame.getLifetime();
+				
+				if(actorState.getDirection().equals(QDirection.E) || actorState.getDirection().equals(QDirection.NE)) {
+					g2.drawImage(currentAnimFrame.getImage(), null, x, y);
+				} else {
+					g2.drawImage(QAnimUtils.performXFormation(QTransformation.FLIPX, currentAnimFrame.getImage()), null, x, y);
+				}
 			}
-			
 		} else if(defaultImg != null) {
+			tDelta = 0;
+			currentFrameLifetime = 0;
+			
 			if(actorState.getDirection().equals(QDirection.E)) {
 				g2.drawImage(defaultImg, null, x, y);
 			} else {
-				g2.drawImage(QAnimUtils.flipImgHorizontal(defaultImg), null, x, y);
-			}	
+				g2.drawImage(QAnimUtils.performXFormation(QTransformation.FLIPX, defaultImg), null, x, y);
+			}
 		}
 	}
 	
@@ -144,6 +180,14 @@ public class QActor {
 	
 	public int getActorId() {
 		return id;
+	}
+	
+	public int getCurrentFrameLifetime() {
+		return currentFrameLifetime;
+	}
+	
+	public void setCurrentFrameLifetime(int lifetime) {
+		currentFrameLifetime = lifetime;
 	}
 	
 	public BufferedImage getDefaultImg() {

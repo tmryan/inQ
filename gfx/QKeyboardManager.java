@@ -51,10 +51,10 @@ public class QKeyboardManager {
 				break;
 		}
 		
-		for(boolean b : keyStates) {
-			System.out.print(((b) ? 1 : 0));
-		}
-		System.out.println();
+		//for(boolean b : keyStates) {
+		//	System.out.print(((b) ? 1 : 0));
+		//}
+		//System.out.println();
 	}
 	
 	public boolean[] getKeyboardState() {

@@ -14,8 +14,12 @@ public class QSceneryActor extends QActor {
 
 	@Override
 	public void draw(Graphics2D g2) {
+		// Note: Need to implement timings for animated scenery
 		if(getAnimIterator() != null && getAnimIterator().hasNextFrame()) {
-			g2.drawImage(getAnimIterator().getNextFrame(), null, getX(), getY());		
+			QAnimation.AnimFrame frame = getAnimIterator().getNextFrame();
+			setCurrentFrameLifetime(frame.getLifetime());
+			
+			g2.drawImage(frame.getImage(), null, getX(), getY());		
 		} else if(getDefaultImg() != null) {
 			g2.drawImage(getDefaultImg(), null, getX(), getY());
 		}

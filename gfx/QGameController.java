@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import tryan.inq.gfx.QAnimation;
+
 public class QGameController {
 	private QScene animTestScene;
 	private QGameState gameState;
@@ -136,16 +138,20 @@ public class QGameController {
 		 */
 
 		// Note: creating of animation maps could probably be more elegant!
+		// Note: adding an idle frame at the end of animation is currently only way to avoid walking in place
 		// Creating anim maps
 		QAnimMap peegAnims = new QAnimMap();
 		peegAnims.addAnimation("idle", new QAnimation("idle", QGameConstants.DEF_ANIM_PRIORITY, 
-				resMan.getImage("peegPlayer.png")));
+				new QAnimation.AnimFrame(resMan.getImage("peegPlayer.png"), 1)));
 		peegAnims.addAnimation("walk", new QAnimation("walk", QGameConstants.DEF_ANIM_PRIORITY, 
-				resMan.getImage("peegPlayerWalk1.png"), resMan.getImage("peegPlayerWalk2.png")));
+				new QAnimation.AnimFrame(resMan.getImage("peegPlayerWalk1.png"), 100), new QAnimation.AnimFrame(resMan.getImage("peegPlayerWalk2.png"), 100),
+				new QAnimation.AnimFrame(resMan.getImage("peegPlayer.png"), 1)));
 		peegAnims.addAnimation("fall", new QAnimation("fall", QGameConstants.DEF_ANIM_PRIORITY, 
-				resMan.getImage("peegPlayerWalk1.png"), resMan.getImage("peegPlayerWalk2.png")));
+				new QAnimation.AnimFrame(resMan.getImage("peegPlayerWalk1.png"), 100), new QAnimation.AnimFrame(resMan.getImage("peegPlayerWalk2.png"), 100),
+				new QAnimation.AnimFrame(resMan.getImage("peegPlayer.png"), 1)));
 		peegAnims.addAnimation("jump", new QAnimation("jump", QGameConstants.DEF_ANIM_PRIORITY, 
-				resMan.getImage("peegPlayerWalk1.png"), resMan.getImage("peegPlayerWalk2.png")));
+				new QAnimation.AnimFrame(resMan.getImage("peegPlayerWalk1.png"), 100), new QAnimation.AnimFrame(resMan.getImage("peegPlayerWalk2.png"), 100),
+				new QAnimation.AnimFrame(resMan.getImage("peegPlayer.png"), 1)));
 		resMan.addAnimMap("peegAnims", peegAnims);
 		
 		// Creating a pathing map in this mess of data

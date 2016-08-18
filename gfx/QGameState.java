@@ -80,7 +80,6 @@ public class QGameState {
 	}
 	
 	public void addSceneState(QSceneState sceneState) {
-		System.out.println(sceneState.getSceneId());
 		sceneStates.put(sceneState.getSceneId(), sceneState);
 	}
 	

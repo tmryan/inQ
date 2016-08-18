@@ -11,13 +11,14 @@ public class QInteractableActor extends QActor {
 	
 	@Override
 	public void draw(Graphics2D g2) {
+		// Note: Need to implement timings for animated interactables
 		if(((QInteractableState)getActorState()).isHighlighted()) {
 			g2.setColor(getResMan().getColor("highlightClr"));
 			g2.fillRoundRect(getX()-2, getY()-2, getWidth()+4, getHeight()+4, 3, 3);
 		}
 		
 		if(getAnimIterator() != null && getAnimIterator().hasNextFrame()) {
-			g2.drawImage(getAnimIterator().getNextFrame(), null, getX(), getY());		
+			g2.drawImage(getAnimIterator().getNextFrame().getImage(), null, getX(), getY());		
 		} else if(getDefaultImg() != null) {
 			g2.drawImage(getDefaultImg(), null, getX(), getY());
 		}
