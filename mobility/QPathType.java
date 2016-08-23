@@ -2,14 +2,15 @@ package tryan.inq.mobility;
 
 public enum QPathType {
 	NOPATH(0),
-	GROUND(1),
-	AIR(2);
+	ALL(1),
+	GROUND(2),
+	AIR(3);
 	
-	private int pathType;
+	private int pathTypeId;
 	
-	private QPathType(int pathType) {
-		this.pathType = pathType;
+	private QPathType(int pathTypeId) {
+		this.pathTypeId = pathTypeId;
 	}
 			
-	public int pathType() { return pathType; }
+	public int pathTypeId() { return pathTypeId; }
 }

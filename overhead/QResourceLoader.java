@@ -11,12 +11,10 @@ public class QResourceLoader {
 		resMan.addImage("peegPlayer.png");
 		resMan.addImage("peegPlayerWalk1.png");
 		resMan.addImage("peegPlayerWalk2.png");
-		resMan.addImage("bg.jpg");
-		resMan.addImage("hills1.png");
-		resMan.addImage("hills2.png");
-		resMan.addImage("rocks.png");
-		resMan.addImage("tree1.png");
-		resMan.addImage("clickyTest.png");
+		resMan.addImage("bg1.jpg");
+		resMan.addImage("bg2.png");
+		resMan.addImage("bg3.png");
+		resMan.addImage("playableArea.png");
 		resMan.addImage("sun.png");
 		
 		resMan.addColor("highlightClr", new Color(23, 164, 255));

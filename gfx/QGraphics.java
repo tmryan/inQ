@@ -74,7 +74,7 @@ public class QGraphics extends Canvas {
 				// Drawing scene to BufferedImage
 				scenes.get(gState.getCurrentSceneID()).draw(bg2);
 				
-				// Note: Find out why coordinate space is flipped here
+				// Note: Find out why coordinate space is flipped about x-axis here
 				// Copying area of scene inside camera viewport onto back buffer
 				g2.drawImage(bImg, null, scene.getCamera().getX() * -1, scene.getCamera().getY());
 			} finally {
@@ -86,8 +86,27 @@ public class QGraphics extends Canvas {
 		} while(bufferMan.contentsLost() || bufferMan.contentsRestored());
 	}
 	
+	// For resizing window when user adjusts graphics settings
+	public void resizeWindow() {
+		frame.setSize(QGameSettings.getWinWidth(), QGameSettings.getWinHeight());
+		setSize(QGameSettings.getWinWidth(), QGameSettings.getWinHeight());
+	}
+	
 	public void addScene(QScene scene, int id) {
 		scenes.put(id, scene);
+	}
+	
+	/////////////
+	// Debugging
+	//////////
+	
+	// Note: Moving this here until UI class is implemented
+	public void enablePathingOverlay(boolean isPathingOverlayEnabled) {
+		scenes.get(gState.getCurrentSceneID()).enablePathingOverlay(isPathingOverlayEnabled);
+	}
+	
+	public void enableBoundsOverlay(boolean ispBoundsEnabled) {
+		scenes.get(gState.getCurrentSceneID()).enableBoundsOverlay(ispBoundsEnabled);
 	}
 		
 }

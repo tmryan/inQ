@@ -8,8 +8,8 @@ import tryan.inq.state.QInteractableState;
 
 public class QInteractableActor extends QActor {
 	
-	public QInteractableActor(int x, int y, BufferedImage img, QResourceManager resMan, int layer) {
-		super(x, y, img, resMan, layer);
+	public QInteractableActor(BufferedImage img, QResourceManager resMan, int layer) {
+		super(img, resMan, layer);
 	}
 	
 	@Override

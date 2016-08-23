@@ -12,7 +12,7 @@ import tryan.inq.mobility.QDirection;
 import tryan.inq.mobility.QPathType;
 import tryan.inq.mobility.QPathingMap;
 
-// Note: Weather and time systems will go here
+// Note: Weather and time systems will belong to QSceneState
 
 public class QSceneState {
 	private int sceneWidth;
@@ -154,7 +154,6 @@ public class QSceneState {
 	public void playNextEvent() {
 		// Note: Should these events be executed one per tick or all? Set a limit? Use greedy?
 		if(eventMan.hasNextEvent()) {
-			// QUEUE IS EMPTY WHYYYYY?!
 			eventMan.getNextEvent().playEvent();
 		}
 	}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+	<name></name>
+	<bgimg></bgimg>
+	<dims>
+		<width></width>
+		<height></height>
+		<minCamX></minCamX>
+		<minCamY></minCamY>
+		<maxCamX></maxCamX>
+		<maxCamY></maxCamY>
+	</dims>
+	<actors>
+		<actor></actor>
+	</actors>
+	<events>
+		<trigger>
+			<x></x>
+			<y></y>
+			<width></width>
+			<height></height>
+			<oneShot></oneShot>
+			<event></event>
+		</trigger>
+		<timed>
+			<time></time>
+			<oneShot></oneShot>
+			<event></event>
+		</timed>
+	</events>
+	<pathingMap>
+		<row><all></all></row>
+	</pathingMap>
+</scene>

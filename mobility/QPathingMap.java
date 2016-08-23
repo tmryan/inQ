@@ -21,19 +21,20 @@ public class QPathingMap {
 	}
 	
 	private void init() {
-		// Building cell matrix
+		// Building pathing cell matrix
 		for(int i = 0; i < pathingMap.length; i++) {
 			for(int j = 0; j < pathingMap[0].length; j++) {
-				pathingMap[i][j] = new PathingGridCell(cellSize, i, j, QPathType.GROUND);
+				pathingMap[i][j] = new PathingGridCell(cellSize, i, j, QPathType.ALL);
 			}
 		}
 		
-		// TESTING PATH TYPES AND COLLISION!!!!!!!!!!!!!!!
-		pathingMap[600/cellSize][1200/cellSize].setPathType(QPathType.AIR);
-		pathingMap[10][25].setPathType(QPathType.NOPATH);
+		// TESTING PATH TYPES AND COLLISION!!!!!!!!!!!!!!!		
+//		for(int j = 0; j < 40; j++) {
+//			pathingMap[28][j] = new PathingGridCell(cellSize, 28, j, QPathType.NOPATH);
+//		}
 		
-		for(int j = 0; j < pathingMap[28].length; j++) {
-			pathingMap[28][j] = new PathingGridCell(cellSize, 28, j, QPathType.NOPATH);
+		for(int j = 0; j < pathingMap[45].length; j++) {
+			pathingMap[45][j] = new PathingGridCell(cellSize, 45, j, QPathType.NOPATH);
 		}
 	}
 	
@@ -95,6 +96,7 @@ public class QPathingMap {
 		return isValid;
 	}
 	
+	// Note: Revisit pathing validation algorithm, sometimes player moves partially through invalid cells
 	public boolean isValidMoveY(QBounds bounds, QPathType pathingType, QDirection direction) {
 		PathingGridCell cell = null;
 		boolean isValid = false;
@@ -147,7 +149,7 @@ public class QPathingMap {
 		}
 		
 		public boolean isPathable(QPathType pathingType) {
-			return (pathType.pathType() == pathingType.pathType()) ? true : false;
+			return (pathType.pathTypeId() == pathingType.pathTypeId() || pathType.pathTypeId() == QPathType.ALL.pathTypeId()) ? true : false;
 		}
 		
 		public QPathType getPathType() {
@@ -183,25 +185,25 @@ public class QPathingMap {
 	// Debugging
 	///////////
 	/*
-	 * Note: Debugging should eventually all exist in its own class so its easier to remove
+	 * Note: Debugging should eventually exist in its own class so its easier to remove
 	 * 		 May still need some hooks in individual components, but can document them
 	 * 
-	 * Note: Could debug heavy lifters be inner classes while a manager class handles UI state?
+	 * Note: Taking a huge FPS hit for this overlay, might be alpha related
 	 */
 	
 	public void draw(Graphics2D g2) {
 		for(PathingGridCell row[] : pathingMap) {
 			for(PathingGridCell cell : row){
-				if(cell.getPathType().equals(QPathType.GROUND)) {
+				if(cell.getPathType().equals(QPathType.ALL) || cell.getPathType().equals(QPathType.GROUND)) {
 					g2.setColor(new Color(43, 255, 98, 40));
-					g2.fillRect(cell.getX(), cell.getY(), cellSize, cellSize);
+					g2.fillRect(cell.getX(), cell.getY(), cell.getCellWidth(), cell.getCellWidth());
 					g2.setColor(new Color(43, 255, 98));
-					g2.drawRect(cell.getX(), cell.getY(), cellSize, cellSize);
+					g2.drawRect(cell.getX(), cell.getY(), cell.getCellWidth(), cell.getCellWidth());
 				} else {
 					g2.setColor(new Color(255, 78, 51, 40));
-					g2.fillRect(cell.getX(), cell.getY(), cellSize, cellSize);
+					g2.fillRect(cell.getX(), cell.getY(), cell.getCellWidth(), cell.getCellWidth());
 					g2.setColor(new Color(255, 78, 51));
-					g2.drawRect(cell.getX(), cell.getY(), cellSize, cellSize);
+					g2.drawRect(cell.getX(), cell.getY(), cell.getCellWidth(), cell.getCellWidth());
 				}
 			}
 		}

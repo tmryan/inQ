@@ -16,14 +16,14 @@ public abstract class QAbstractMover implements QMoverModule {
 	
 	public QAbstractMover() {
 		moverSys = null;
-		pathingType = QPathType.GROUND;
+		pathingType = QPathType.ALL;
 		timing = 0;
 		isTimed = false;
 	}
 	
 	public QAbstractMover(QMoverSystem moverSys) {
 		this.moverSys = moverSys;
-		pathingType = QPathType.GROUND;
+		pathingType = QPathType.ALL;
 	}
 	
 	public abstract boolean move(QDirection direction);

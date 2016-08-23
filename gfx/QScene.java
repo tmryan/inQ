@@ -11,9 +11,7 @@ import tryan.inq.state.QSceneState;
 public class QScene {
 	private int sceneWidth;
 	private int sceneHeight;
-	private QResourceManager resMan;
 	private QSceneState sceneState;
-	private QMouseManager mouseMan;
 	private QScenery backGroundImg;
 	private QCameraActor camera;
 	
@@ -28,13 +26,11 @@ public class QScene {
 	boolean isPathingOverlayEnabled;
 	boolean ispBoundsEnabled;
 	
-	public QScene(QResourceManager resMan, QMouseManager mouseMan) {
-		this.resMan = resMan;
-		this.mouseMan = mouseMan;
+	public QScene(QResourceManager resMan, BufferedImage bgImg) {
 		sceneState = null;
-		backGroundImg = new QScenery(0, 0, resMan.getImage("hills2.png"), 0);
-		sceneWidth = backGroundImg.getWidth();
-		sceneHeight = backGroundImg.getHeight();
+		backGroundImg = new QScenery(0, 0, bgImg, 0);
+		sceneWidth = resMan.getImage("bg1.jpg").getWidth();
+		sceneHeight = resMan.getImage("bg1.jpg").getHeight();
 		player = null;
 		actors = new TreeMap<Integer, QActor>();
 		scenery = new TreeMap<Integer, QSceneryActor>();

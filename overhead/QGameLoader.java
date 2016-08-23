@@ -21,17 +21,7 @@ public class QGameLoader {
 		// Loading resources
 		QResourceManager resMan = new QResourceManager();
 		new QResourceLoader().loadResources(resMan);
-			
-		// Loading main menu
-		// Note: May need to abstract further since returning to the main menu cannot be done from outside of this class
-		
-		// Loading current game state
-		QStateManager stateMan = new QStateManager();
-		
-		/* 
-		 * Note: Controller instantiation needs to happen once QGraphics is loaded for menu UI to draw
-		 * 		 Maybe instantiate QGraphics and QGameController here, then pass gfx reference to controller?
-		 */
+					
 		// Creating game controller
 		new QGameController(resMan, new QGameSettings());
 	}

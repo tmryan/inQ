@@ -40,6 +40,12 @@ public class QCameraMover extends QAbstractMover {
 					((QCameraState)getActorState()).setIsMoving(false);
 				}
 			}
+			
+			if(direction.yDirection() == 1 && getActorState().getY() + getActorState().getHeight() < ((QCameraState)getActorState()).getMaxY()) {
+				getActorState().setY(playerState.getY() + (getActorState().getHeight() / 2));
+			} else if(direction.yDirection() == -1 && getActorState().getY() > ((QCameraState)getActorState()).getMinY()) {
+				getActorState().setY(playerState.getY() + (getActorState().getHeight() / 2));
+			}
 		}
 		
 		return true;

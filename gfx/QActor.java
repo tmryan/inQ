@@ -39,11 +39,11 @@ public class QActor {
 	 */
 	private double animSpeedMultiplier;
 
-	public QActor(int x, int y, BufferedImage img, QResourceManager resMan, int layer) {
+	public QActor(BufferedImage img, QResourceManager resMan, int layer) {
 		id = QGameState.generateActorId();
 		this.defaultImg = img;
-		this.x = x;
-		this.y = y;
+		x = 0;
+		y = 0;
 		width = img.getWidth();
 		height = img.getHeight();
 		// Note: Layer may eventually be used for draw order

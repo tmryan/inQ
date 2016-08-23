@@ -27,6 +27,16 @@ public class QGameState {
 		currentScene = 0;
 	}
 	
+	public void onTick(long tickTime) {
+		// Note: Temporary solution for high initial value from System.nanotime()
+		if(tickTime < 1000) {
+			QDirection direction = resolveKeyCommands(tickTime);
+			
+			resolveMousePosition();
+			sceneStates.get(currentScene).onTick(tickTime, direction);
+		}
+	}
+	
 	// Note: These may end up in some utility class
 	public static int generateActorId() {
 		return nextActorId++;
@@ -104,13 +114,8 @@ public class QGameState {
 		return sceneStates.get(currentScene).getSceneId();
 	}
 	
-	public void onTick(long tickTime) {
-		// Note: Temporary solution to high initial value from System.nanotime()
-		if(tickTime < 1000) {
-			QDirection direction = resolveKeyCommands(tickTime);
-			
-			resolveMousePosition();
-			sceneStates.get(currentScene).onTick(tickTime, direction);
-		}
+	public QPlayerState getPlayerState() {
+		return playerState;
 	}
+	
 }

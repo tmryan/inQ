@@ -15,7 +15,6 @@ public class QTimedEvent {
 
 	public boolean isTimeExpired(long tickTime) {
 		boolean timerExpired = false;
-		// WHY TIMER SO FAST????
 		tDelta += tickTime;
 
 		if(tDelta > interval) {

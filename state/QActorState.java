@@ -46,17 +46,11 @@ public class QActorState {
 		move(direction);
 	}
 	
-	public void onUse() {
-		// Do stuff
-	}
+	public void onUse() {}
 	
-	public void onHover() {
-		// Do stuff
-	}
+	public void onHover() {}
 	
-	public void move(QDirection direction) {
-		// Note: May end up not needing this one
-	}
+	public void move(QDirection direction) {}
 	
 	public void walk(QDirection direction) {}
 	

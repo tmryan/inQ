@@ -13,9 +13,9 @@ public class QImage {
 		BufferedImage img = null;
 		
 		try {
-			img = ImageIO.read(new File(file));
+			img = ImageIO.read(new File("res/" + file));
 		} catch (IOException e) {
-			System.out.println(file);
+			System.out.println("Failed to load " + file);
 			e.printStackTrace();
 		}
 		

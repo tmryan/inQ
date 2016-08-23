@@ -3,10 +3,14 @@ package tryan.inq.mobility;
 public class QWalkMover extends QAbstractMover {
 	public QWalkMover() {
 		super();
+		
+		setPathType(QPathType.GROUND);
 	}
 	
 	public QWalkMover(QMoverSystem moverSys) {
 		super(moverSys);
+		
+		setPathType(QPathType.GROUND);
 	}
 	
 	@Override

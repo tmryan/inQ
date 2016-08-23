@@ -10,8 +10,8 @@ import tryan.inq.overhead.QResourceManager;
  */
 public class QSceneryActor extends QActor {
 	
-	public QSceneryActor(int x, int y, BufferedImage img, QResourceManager resMan, int layer) {
-		super(x, y, img, resMan, layer);
+	public QSceneryActor(BufferedImage img, QResourceManager resMan, int layer) {
+		super(img, resMan, layer);
 	}
 
 	@Override
