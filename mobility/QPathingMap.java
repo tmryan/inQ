@@ -33,9 +33,9 @@ public class QPathingMap {
 //			pathingMap[28][j] = new PathingGridCell(cellSize, 28, j, QPathType.NOPATH);
 //		}
 		
-		for(int j = 0; j < pathingMap[45].length; j++) {
-			pathingMap[45][j] = new PathingGridCell(cellSize, 45, j, QPathType.NOPATH);
-		}
+//		for(int j = 0; j < pathingMap[45].length; j++) {
+//			pathingMap[45][j] = new PathingGridCell(cellSize, 45, j, QPathType.NOPATH);
+//		}
 	}
 	
 	private PathingGridCell findCell(int x, int y) {
@@ -125,6 +125,14 @@ public class QPathingMap {
 	
 	public void setPathingCellType(int x, int y, QPathType pathType) {
 		pathingMap[x][y].setPathType(pathType);
+	}
+	
+	public int getRowCount() {
+		return pathingMap.length;
+	}
+
+	public int getColCount() {
+		return pathingMap[0].length;
 	}
 	
 	//////////////////////////

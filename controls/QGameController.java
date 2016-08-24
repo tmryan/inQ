@@ -118,6 +118,9 @@ public class QGameController {
 		// Hardcoding first scene load for now, will eventually load main menu scene initially
 		gameState.loadScene(1);
 		
+		// Initializing buffers
+		gfx.refreshGfx();
+		
 		// Initializing debugging tools, moving to QUserInterface soon
 		isPathingOverlayEnabled = false;
 		ispBoundsEnabled = false;
@@ -168,8 +171,10 @@ public class QGameController {
 				gfx.enablePathingOverlay(isPathingOverlayEnabled);
 				gfx.enableBoundsOverlay(ispBoundsEnabled);
 				
+				
 				// Updating view
 				gfx.updateView(deltaTime);
+				// Note: Currently takes around 26ms to render
 				gfx.render();
 				frames++;
 				

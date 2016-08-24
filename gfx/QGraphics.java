@@ -21,12 +21,15 @@ public class QGraphics extends Canvas {
 	private HashMap<Integer, QScene> scenes;
 	private QUserInterface ui;
 	private BufferStrategy bufferMan;
+	private BufferedImage bImg;
 	private JFrame frame;
 	
 	public QGraphics(QGameState gState) {
 		this.gState = gState;
 		scenes = new HashMap<Integer, QScene>();
 		frame = new JFrame();
+		bImg = null;
+		
 		// Note: add UI object here
 		
 		init();
@@ -49,7 +52,6 @@ public class QGraphics extends Canvas {
 		
 		// Creating double buffering strategy for this Canvas
 		createBufferStrategy(2);
-		bufferMan = getBufferStrategy();
 	}
 	
 	public void updateView(long tickTime) {
@@ -57,8 +59,7 @@ public class QGraphics extends Canvas {
 	}
 	
 	public void render() {
-		BufferedImage bImg = getGraphicsConfiguration().createCompatibleImage(scenes.get(gState.getCurrentSceneID()).getSceneWidth(), 
-				scenes.get(gState.getCurrentSceneID()).getSceneHeight());
+		// Note: Safe to save bg2 handle in order to improve performance? Maybe not?
 		Graphics2D bg2 = bImg.createGraphics();
 		Graphics2D g2 = null;
 		QScene scene = scenes.get(gState.getCurrentSceneID());
@@ -76,9 +77,10 @@ public class QGraphics extends Canvas {
 				
 				// Note: Find out why coordinate space is flipped about x-axis here
 				// Copying area of scene inside camera viewport onto back buffer
-				g2.drawImage(bImg, null, scene.getCamera().getX() * -1, scene.getCamera().getY());
+				g2.drawImage(bImg, null, scene.getCamera().getX() * -1, scene.getCamera().getY() * -1);
 			} finally {
 				g2.dispose();
+				bg2.dispose();
 			}
 			
 			// Swap or blt back buffer
@@ -90,6 +92,15 @@ public class QGraphics extends Canvas {
 	public void resizeWindow() {
 		frame.setSize(QGameSettings.getWinWidth(), QGameSettings.getWinHeight());
 		setSize(QGameSettings.getWinWidth(), QGameSettings.getWinHeight());
+		
+		refreshGfx();
+	}
+	
+	public void refreshGfx() {
+		bImg = getGraphicsConfiguration().createCompatibleImage(scenes.get(gState.getCurrentSceneID()).getSceneWidth(), 
+				scenes.get(gState.getCurrentSceneID()).getSceneHeight());
+		
+		bufferMan = getBufferStrategy();
 	}
 	
 	public void addScene(QScene scene, int id) {

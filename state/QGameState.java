@@ -52,6 +52,7 @@ public class QGameState {
 	 */
 	public void resolveMouseClick(int x, int y) {
 		sceneStates.get(currentScene).resolveMouseClick(x, y);
+		System.out.println("x: " + (x + camState.getX()) + " y: " + (y + camState.getY()));
 	}
 	
 	public void resolveMousePosition() {

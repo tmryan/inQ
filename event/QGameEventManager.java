@@ -33,7 +33,9 @@ public class QGameEventManager {
 	
 	// Enqueue game event
 	public void addGameEvent(QGameEvent gameEvent) {
-		eventQueue.add(gameEvent);
+		if(gameEvent != null){
+			eventQueue.add(gameEvent);
+		}
 	}
 	
 	public void addAreaTrigger(QAreaTrigger areaTrigger) {

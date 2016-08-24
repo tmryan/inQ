@@ -24,7 +24,7 @@ public class QCameraState extends QActorState {
 
 	@Override
 	public void onTick(long tickTime, QDirection direction) {
-		// Do nothing for now
+		// Do stuff
 	}
 	
 	@Override

@@ -34,9 +34,7 @@ public class QActorState {
 		// Note: AnimStates are a mess. Fix it!
 		
 		moverSys.onTick(tickTime);
-		
-		physics();
-		
+			
 		if(direction == null) {
 			currentAnimState = QAnimState.IDLE;
 		}
@@ -56,7 +54,7 @@ public class QActorState {
 	
 	public void jump(QDirection direction) {}
 	
-	public void physics() {}
+	public boolean physics() {return false;}
 	
 	public boolean containsCoords(int x2, int y2) {
 		return bounds.containsCoords(x2, y2);

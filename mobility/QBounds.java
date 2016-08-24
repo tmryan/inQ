@@ -30,6 +30,7 @@ public class QBounds {
 		return contains;
 	}
 	
+	// Note: Need a contains bounds method
 	public boolean isContainedWithin(int x2, int y2, int x3, int y3) {
 		boolean contained = false;
 		

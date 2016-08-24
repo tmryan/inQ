@@ -22,6 +22,7 @@ import tryan.inq.gfx.QSceneryActor;
 import tryan.inq.mobility.QCameraMover;
 import tryan.inq.mobility.QFallingMover;
 import tryan.inq.mobility.QMoverType;
+import tryan.inq.mobility.QPathType;
 import tryan.inq.mobility.QPathingMap;
 import tryan.inq.mobility.QSceneryMover;
 import tryan.inq.mobility.QSimpleJumpMover;
@@ -88,9 +89,100 @@ public class QStateManager {
 		// Creating a pathing map in this mess of data
 		QPathingMap testSceneMap = new QPathingMap(resMan.getImage("bg1.jpg").getWidth(), resMan.getImage("bg1.jpg").getHeight());
 		
+		// Temporary hardcoded pathing map generation
+		for(int i = 0; i < 27; i++) {
+			testSceneMap.setPathingCellType(18, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(19, i, QPathType.NOPATH);
+		}
+
+		for(int i = 0; i < 29; i++) {
+			testSceneMap.setPathingCellType(20, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(21, i, QPathType.NOPATH);
+		}
+		
+		for(int i = 0; i < 34; i++) {
+			testSceneMap.setPathingCellType(22, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(23, i, QPathType.NOPATH);
+		}
+		
+		for(int i = 0; i < 37; i++) {
+			testSceneMap.setPathingCellType(24, i, QPathType.NOPATH);
+		}
+		
+		for(int i = 0; i < 40; i++) {
+			testSceneMap.setPathingCellType(25, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(26, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(27, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(28, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(29, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(30, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(31, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(32, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(33, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(34, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(35, i, QPathType.NOPATH);
+		}
+	
+		for(int i = 87; i < testSceneMap.getColCount(); i++) {
+			testSceneMap.setPathingCellType(29, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(30, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(31, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(32, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(33, i, QPathType.NOPATH);
+		}
+
+		for(int i = 84; i < testSceneMap.getColCount(); i++) {
+			testSceneMap.setPathingCellType(34, i, QPathType.NOPATH);
+		}
+		
+		for(int i = 0; i < 50; i++) {
+			testSceneMap.setPathingCellType(36, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(37, i, QPathType.NOPATH);
+		}
+		
+		for(int i = 82; i < testSceneMap.getColCount(); i++) {
+			testSceneMap.setPathingCellType(35, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(36, i, QPathType.NOPATH);
+		}
+		
+		for(int i = 81; i < testSceneMap.getColCount(); i++) {
+			testSceneMap.setPathingCellType(37, i, QPathType.NOPATH);
+		}
+		
+		for(int i = 0; i < 53; i++) {
+			testSceneMap.setPathingCellType(38, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(39, i, QPathType.NOPATH);
+		}
+				
+		for(int i = 80; i < testSceneMap.getColCount(); i++) {
+			testSceneMap.setPathingCellType(38, i, QPathType.NOPATH);
+		}
+		
+		for(int i = 68; i < testSceneMap.getColCount(); i++) {
+			testSceneMap.setPathingCellType(39, i, QPathType.NOPATH);
+		}
+		
+		for(int i = 0; i < 55; i++) {
+			testSceneMap.setPathingCellType(40, i, QPathType.NOPATH);
+		}
+		
+		for(int i = 64; i < testSceneMap.getColCount(); i++) {
+			testSceneMap.setPathingCellType(40, i, QPathType.NOPATH);
+		}
+		
+		for(int i = 0; i < testSceneMap.getColCount(); i++) {
+			testSceneMap.setPathingCellType(41, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(42, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(43, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(44, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(45, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(46, i, QPathType.NOPATH);
+			testSceneMap.setPathingCellType(47, i, QPathType.NOPATH);
+		}
+		
 		// Adding some mans to test
 		QActor peegOne = new QActor(resMan.getImage("peegPlayer.png"), resMan, 10);
-		QPlayerState pOneState = new QPlayerState(25, 400, 
+		QPlayerState pOneState = new QPlayerState(25, 345, 
 				resMan.getImage("peegPlayer.png").getWidth(), resMan.getImage("peegPlayer.png").getHeight(),
 				5, peegOne.getActorId(), testSceneMap);
 		peegOne.addAnimMap(resMan.getAnimMap("peegAnims"));
@@ -108,7 +200,7 @@ public class QStateManager {
 		// Creating a scene
 		QScene animTestScene = new QScene(resMan, resMan.getImage("bg1.jpg"));
 		QSceneState testSceneState = new QSceneState(resMan.getImage("bg1.jpg").getWidth(), resMan.getImage("bg1.jpg").getHeight(), pOneState,
-													 25, 25, 2400, 1600);
+													 10, 10, 2400, 1235);
 		gameState.addSceneState(testSceneState);
 		animTestScene.attachSceneState(testSceneState);
 		testSceneState.attachPathingMap(testSceneMap);
@@ -156,16 +248,26 @@ public class QStateManager {
 		animTestScene.addScenery(playableArea);
 		testSceneState.addSceneryState(playableAreaState);
 		
-//		// Adding a test area trigger
-//		QAreaTrigger trigger = new QAreaTrigger(600, 595, 100, 100, true);
+		// Adding a test area trigger
+		QAreaTrigger trigger = new QAreaTrigger(1012, 677, 166, 200, true);
+		trigger.addGameEvent(new QGameEvent(1) {
+			@Override
+			public void playEvent() {
+				System.out.println("A hidden cave! Pigs love hidden caves!");
+			}
+		});
+		testSceneState.addAreaTrigger(trigger);
+		
+		//Note: Only works with one event right now...
+//		QAreaTrigger trigger2 = new QAreaTrigger(1816, 844, 100, 100, true);
 //		trigger.addGameEvent(new QGameEvent(1) {
 //			@Override
 //			public void playEvent() {
-//				System.out.println("It's a trigger! :V");
+//				System.out.println("Another cave! Something smells good here. You know, for a pig...");
 //			}
 //		});
-//		testSceneState.addAreaTrigger(trigger);
-//		
+//		testSceneState.addAreaTrigger(trigger2);
+		
 //		// Adding a test event timer
 //		QTimedEvent timedEvent = new QTimedEvent(5000, true);
 //		timedEvent.addGameEvent(new QGameEvent(1) {

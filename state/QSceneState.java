@@ -62,6 +62,8 @@ public class QSceneState {
 		
 		camState.onTick(tickTime, direction);
 		
+		resolvePhysics();
+		
 		// Note: Check all area triggers and timed events here
 		eventMan.checkAreaTriggers(playerState);
 		eventMan.checkTimedEvents(tickTime);
@@ -148,6 +150,12 @@ public class QSceneState {
 			for(int id : sceneryStates.keySet()) {
 				sceneryStates.get(id).onCommand(tickTime, direction);
 			}
+		}
+	}
+	
+	public void resolvePhysics() {
+		if(playerState.physics()){
+			camState.move(QDirection.S);
 		}
 	}
 	

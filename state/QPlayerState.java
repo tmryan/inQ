@@ -24,13 +24,20 @@ public class QPlayerState extends QActorState {
 		}
 	}
 	
-	public void physics() {
+	@Override
+	public boolean physics() {
+		boolean physics = false;
+		
 		if(getMoverSystem().getMoverModule(QMoverType.FALL) != null) {
 			if(getMoverSystem().move(QMoverType.FALL ,QDirection.S)) {
-				// Note: This doesn't work right now because animation states...
+				// Note: Could flag onGround here to reset double jump, etc
+				// Note: This doesn't work right now because animation states
+				physics = true;
 				setCurrentAnimState(QAnimState.FALL);
 			}
 		}
+		
+		return physics;
 	}
 	
 }

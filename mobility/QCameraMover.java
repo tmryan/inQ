@@ -20,19 +20,41 @@ public class QCameraMover extends QAbstractMover {
 	
 	@Override
 	public boolean move(QDirection direction) {
+		boolean moveX = false;
+		boolean moveY = false;
+		
+		if(direction != null) {
+			if(direction.xDirection() != 0) {
+				moveX(direction);
+				moveX = true;
+			}
+			
+			if(direction.yDirection() == 1) {
+				moveYNeg(direction);
+				moveY = true;
+			} else if(direction.yDirection() == -1) {
+				moveYPos(direction);
+				moveY = true;
+			}
+		}
+		
+		return (moveX | moveY);
+	}
+	
+	public boolean moveX(QDirection direction) {
 		if(direction != null) {
 			setDirection(direction);
 			// Note: On the lookout for a better solution to the camera+scenery movement linking problem
 			((QCameraState)getActorState()).setIsMoving(false);
 			
-			if(direction.xDirection() == 1 && getActorState().getX() + getActorState().getWidth() < ((QCameraState)getActorState()).getMaxX()) {
+			if(direction.xDirection() == 1 && (getActorState().getX() + getActorState().getWidth()) < ((QCameraState)getActorState()).getMaxX()) {
 				if(playerState.getX() + (playerState.getWidth() / 2) > getActorState().getX() + (getActorState().getWidth() / 2)) {
 					getActorState().setX(getActorState().getX() + getActorState().getSpeed());
 					((QCameraState)getActorState()).setIsMoving(true);
 				} else {
 					((QCameraState)getActorState()).setIsMoving(false);
 				}
-			} else if(direction.xDirection() == -1 && getActorState().getX() > ((QCameraState)getActorState()).getMinX()) {
+			} else if(direction.xDirection() == -1 && (getActorState().getX()) > ((QCameraState)getActorState()).getMinX()) {
 				if(playerState.getX() + (playerState.getWidth() / 2) < getActorState().getX() + (getActorState().getWidth() / 2)) {
 					getActorState().setX(getActorState().getX() - getActorState().getSpeed());
 					((QCameraState)getActorState()).setIsMoving(true);
@@ -40,11 +62,43 @@ public class QCameraMover extends QAbstractMover {
 					((QCameraState)getActorState()).setIsMoving(false);
 				}
 			}
+		}
+		
+		return true;
+	}
+	
+	public boolean moveYPos(QDirection direction) {
+		if(direction != null) {
+			setDirection(direction);
+			// Note: On the lookout for a better solution to the camera+scenery movement linking problem
+			((QCameraState)getActorState()).setIsMoving(false);
 			
-			if(direction.yDirection() == 1 && getActorState().getY() + getActorState().getHeight() < ((QCameraState)getActorState()).getMaxY()) {
-				getActorState().setY(playerState.getY() + (getActorState().getHeight() / 2));
-			} else if(direction.yDirection() == -1 && getActorState().getY() > ((QCameraState)getActorState()).getMinY()) {
-				getActorState().setY(playerState.getY() + (getActorState().getHeight() / 2));
+			if(direction.yDirection() == -1 && (getActorState().getY() + playerState.getSpeed()) > ((QCameraState)getActorState()).getMinY()) {
+				if(playerState.getY() + (playerState.getHeight() / 2) < getActorState().getY() + (getActorState().getHeight() / 2)) {
+					getActorState().setY(getActorState().getY() - playerState.getSpeed());
+					((QCameraState)getActorState()).setIsMoving(true);
+				} else {
+					((QCameraState)getActorState()).setIsMoving(false);
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	public boolean moveYNeg(QDirection direction) {
+		if(direction != null) {
+			setDirection(direction);
+			// Note: On the lookout for a better solution to the camera+scenery movement linking problem
+			((QCameraState)getActorState()).setIsMoving(false);
+
+			if(direction.yDirection() == 1 && (getActorState().getY() + getActorState().getHeight() + QPhysics.GRAVITY) < ((QCameraState)getActorState()).getMaxY()) {	
+				if(playerState.getY() + (playerState.getHeight() / 2) > getActorState().getY() + (getActorState().getHeight() / 2)) {
+					getActorState().setY(getActorState().getY() + QPhysics.GRAVITY);
+					((QCameraState)getActorState()).setIsMoving(true);
+				} else {
+					((QCameraState)getActorState()).setIsMoving(false);
+				}
 			}
 		}
 		
