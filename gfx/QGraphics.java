@@ -3,10 +3,8 @@ package tryan.inq.gfx;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.image.VolatileImage;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
@@ -21,17 +19,23 @@ public class QGraphics extends Canvas {
 	private HashMap<Integer, QScene> scenes;
 	private QUserInterface ui;
 	private BufferStrategy bufferMan;
-	private BufferedImage bImg;
+//	private BufferedImage bImg;
 	private JFrame frame;
+	
+	// Note: Temporarily here until UI implemented
+	int fps;
+	long tDelta;
 	
 	public QGraphics(QGameState gState) {
 		this.gState = gState;
 		scenes = new HashMap<Integer, QScene>();
 		frame = new JFrame();
-		bImg = null;
-		
+//		bImg = null;
+
 		// Note: add UI object here
-		
+		fps = 0;
+		tDelta = 0;
+
 		init();
 	}
 	
@@ -52,6 +56,7 @@ public class QGraphics extends Canvas {
 		
 		// Creating double buffering strategy for this Canvas
 		createBufferStrategy(2);
+		refreshGfx();
 	}
 	
 	public void updateView(long tickTime) {
@@ -59,7 +64,9 @@ public class QGraphics extends Canvas {
 	}
 	
 	public void render() {
-		// Note: Safe to save bg2 handle in order to improve performance? Maybe not?
+		// Note: Only creating this image when no longer compatible saves a few FPS
+		BufferedImage bImg = getGraphicsConfiguration().createCompatibleImage(scenes.get(gState.getCurrentSceneID()).getSceneWidth(), 
+				scenes.get(gState.getCurrentSceneID()).getSceneHeight());
 		Graphics2D bg2 = bImg.createGraphics();
 		Graphics2D g2 = null;
 		QScene scene = scenes.get(gState.getCurrentSceneID());
@@ -72,12 +79,22 @@ public class QGraphics extends Canvas {
 				g2.setColor(Color.BLACK);
 				g2.fillRect(0, 0, scene.getSceneWidth(), scene.getSceneWidth());
 
+				/*
+				 *  Note: This call takes around 30-40ms to complete on i5 laptop with Windows 10
+				 *  	  and 26ms on desktop with i5 and NVidia card
+				 *  	  Problem is drawing too much on bg2, especially transparent pixels
+				 *  	  Best solution is use OpenGL, other solutions involve scene tiling
+				 *  	  and fixing the art so it has less transparency
+				 */
 				// Drawing scene to BufferedImage
 				scenes.get(gState.getCurrentSceneID()).draw(bg2);
-				
-				// Note: Find out why coordinate space is flipped about x-axis here
+
+				// Note: Coordinates flipped when creating compatible image from graphics configuration
 				// Copying area of scene inside camera viewport onto back buffer
 				g2.drawImage(bImg, null, scene.getCamera().getX() * -1, scene.getCamera().getY() * -1);
+				
+				g2.drawString("FPS: " + fps, 20, 20);
+				g2.drawString("tDelta: " + tDelta, 20, 35);
 			} finally {
 				g2.dispose();
 				bg2.dispose();
@@ -96,10 +113,7 @@ public class QGraphics extends Canvas {
 		refreshGfx();
 	}
 	
-	public void refreshGfx() {
-		bImg = getGraphicsConfiguration().createCompatibleImage(scenes.get(gState.getCurrentSceneID()).getSceneWidth(), 
-				scenes.get(gState.getCurrentSceneID()).getSceneHeight());
-		
+	public void refreshGfx() {	
 		bufferMan = getBufferStrategy();
 	}
 	
@@ -112,6 +126,14 @@ public class QGraphics extends Canvas {
 	//////////
 	
 	// Note: Moving this here until UI class is implemented
+	public void setFPS(int fps) {
+		this.fps = fps;
+	}
+	
+	public void setTDelta(long tDelta) {
+		this.tDelta = tDelta;
+	}
+	
 	public void enablePathingOverlay(boolean isPathingOverlayEnabled) {
 		scenes.get(gState.getCurrentSceneID()).enablePathingOverlay(isPathingOverlayEnabled);
 	}
