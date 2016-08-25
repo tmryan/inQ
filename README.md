@@ -28,6 +28,6 @@ Migrate graphics to OpenGL; might be cool to implement in C++ and play around wi
 Add time and weather systems
 Add audio systems; research good lib
 Figure out how to implement event scripting functionality
-Implement AI
+Implement AI 
 Play with skills, items and combat systems implementation
 Find better design for mover and collision systems
