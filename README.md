@@ -3,7 +3,7 @@ inQ is a simple game engine project that I decided to create over the 2016 summe
 
 Now that the fall semester has started, I need to refocus my efforts on school instead of this project. Below are some things I would like to get implemented in the future, but all timeframes are purely conjecture.
 
-###Todo
+###ToDo
 ######Timeframe: hopefully I will find some time during school for these
 - Finish interactive actor implementation
 - Place fadeable occlusion actor over area with chest inside
