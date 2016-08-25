@@ -4,7 +4,7 @@ import tryan.inq.mobility.QDirection;
 import tryan.inq.mobility.QMoverType;
 import tryan.inq.overhead.QGameSettings;
 
-public class QCameraState extends QActorState {
+public class QCameraState extends QActorState implements QMoveable, QControllable {
 	// These camera bounds constraints will be set by the scene state as a new scene is loaded
 	private int minX;
 	private int minY;
@@ -38,6 +38,15 @@ public class QCameraState extends QActorState {
 			getMoverModule(QMoverType.CAMERA).move(direction);
 		}
 	}
+	
+	@Override
+	public void walk(QDirection direction) {}
+
+	@Override
+	public void jump(QDirection direction) {}
+	
+	@Override
+	public boolean fall() {return false;}
 	
 	public int getMinX() {
 		return minX;
@@ -78,4 +87,5 @@ public class QCameraState extends QActorState {
 	public void setIsMoving(boolean isMoving) {
 		this.isMoving = isMoving;
 	}
+
 }

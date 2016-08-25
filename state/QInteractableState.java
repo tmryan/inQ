@@ -1,44 +1,50 @@
 package tryan.inq.state;
 
+import tryan.inq.event.QGameEvent;
 import tryan.inq.mobility.QDirection;
 
 /*
  * Note: Need to abstract actor states soon
  * 		 For example: this doesn't need movers, just animation states
  */
-public class QInteractableState extends QActorState {	
+public class QInteractableState extends QActorState implements QInteractable {	
 	private boolean isHightlighted;
-//	private int tDelta;
+	private QGameEvent gameEvent;
+	private int tDelta;
 	
 	public QInteractableState(int x, int y, int width, int height, int id) {
 		super(x, y, width, height, 0, id, null);
 		
 		isHightlighted = false;
-//		tDelta = 0;
+		gameEvent = null;
+		tDelta = 0;
 	}
 	
 	@Override
 	public void onTick(long tickTime, QDirection direction) {
-		// Do Stuff
+		// Do something every game tick
 	}
 	
 	@Override
 	public void onUse() {
-		System.out.println("clicked actor " + getActorId() + "!");
+		System.out.println("Clicked actor " + getActorId() + "!");
 	}
 
 	@Override
 	public void onHover() {
-		// Note: Doesn't unhighlight! D:
-//		System.out.println("highlight!");
 		isHightlighted = true;
 	}
+
+	// Note: Need to allow for multiple events at some point
+	@Override
+	public void addGameEvent(QGameEvent gameEvent) {
+		this.gameEvent = gameEvent;
+	}
 	
-//	@Override
-//	public void onMouseLeave() {
-//		System.out.println("highlight!");
-//		isHightlighted = true;
-//	}
+	@Override
+	public QGameEvent getGameEvent() {
+		return gameEvent;
+	}
 	
 	public boolean isHighlighted() {
 		return isHightlighted;
@@ -47,5 +53,4 @@ public class QInteractableState extends QActorState {
 	public void removeHighlight() {
 		isHightlighted = false;
 	}
-
 }

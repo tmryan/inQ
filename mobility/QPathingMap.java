@@ -27,15 +27,6 @@ public class QPathingMap {
 				pathingMap[i][j] = new PathingGridCell(cellSize, i, j, QPathType.ALL);
 			}
 		}
-		
-		// TESTING PATH TYPES AND COLLISION!!!!!!!!!!!!!!!		
-//		for(int j = 0; j < 40; j++) {
-//			pathingMap[28][j] = new PathingGridCell(cellSize, 28, j, QPathType.NOPATH);
-//		}
-		
-//		for(int j = 0; j < pathingMap[45].length; j++) {
-//			pathingMap[45][j] = new PathingGridCell(cellSize, 45, j, QPathType.NOPATH);
-//		}
 	}
 	
 	private PathingGridCell findCell(int x, int y) {

@@ -35,7 +35,8 @@ import tryan.inq.state.QSceneState;
 import tryan.inq.state.QSceneryState;
 
 /**
- * This class manages the loading of game state from disk using the native Java StAX XML parser.
+ * This class manages the loading of game state from disk. Currently XML loader implementation is halted
+ * and all data loading is hardcoded.
  * 
  * @author Thomas Ryan
  *
@@ -180,7 +181,7 @@ public class QStateManager {
 			testSceneMap.setPathingCellType(47, i, QPathType.NOPATH);
 		}
 		
-		// Adding some mans to test
+		// Adding player to test
 		QActor peegOne = new QActor(resMan.getImage("peegPlayer.png"), resMan, 10);
 		QPlayerState pOneState = new QPlayerState(25, 345, 
 				resMan.getImage("peegPlayer.png").getWidth(), resMan.getImage("peegPlayer.png").getHeight(),
@@ -197,7 +198,7 @@ public class QStateManager {
 		camState.addMoverModule(QMoverType.CAMERA, new QCameraMover(pOneState));
 		cam.attachActorState(camState);
 
-		// Creating a scene
+		// Creating scene
 		QScene animTestScene = new QScene(resMan, resMan.getImage("bg1.jpg"));
 		QSceneState testSceneState = new QSceneState(resMan.getImage("bg1.jpg").getWidth(), resMan.getImage("bg1.jpg").getHeight(), pOneState,
 													 10, 10, 2400, 1235);
@@ -248,7 +249,7 @@ public class QStateManager {
 		animTestScene.addScenery(playableArea);
 		testSceneState.addSceneryState(playableAreaState);
 		
-		// Adding a test area trigger
+		// Adding test area triggers
 		QAreaTrigger trigger = new QAreaTrigger(1012, 677, 166, 200, true);
 		trigger.addGameEvent(new QGameEvent(1) {
 			@Override
@@ -278,6 +279,7 @@ public class QStateManager {
 //		testSceneState.addTimedEvent(timedEvent);
 	}
 	
+	// Note: Halted XML loader implementation for now
 	public void loadGameStateFromXML() {
 		// Creating StAX-based reader
 		FileInputStream inStream = null;
@@ -521,7 +523,7 @@ public class QStateManager {
 	}
 	
 	/**
-	 * Returns data contained at the current cursor location.
+	 * Returns data contained at the current xml reader cursor location.
 	 * The method assumes that the current cursor is pointing to an attribute value and not a tag name.
 	 * 
 	 * @return		A String representation of the text contained at the current cursor location

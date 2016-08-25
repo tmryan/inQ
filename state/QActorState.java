@@ -40,20 +40,6 @@ public class QActorState {
 		}
 	}
 	
-	public void onCommand(long tickTime, QDirection direction) {
-		move(direction);
-	}
-	
-	public void onUse() {}
-	
-	public void onHover() {}
-	
-	public void move(QDirection direction) {}
-	
-	public void walk(QDirection direction) {}
-	
-	public void jump(QDirection direction) {}
-	
 	public boolean physics() {return false;}
 	
 	public boolean containsCoords(int x2, int y2) {

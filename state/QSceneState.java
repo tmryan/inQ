@@ -154,7 +154,7 @@ public class QSceneState {
 	}
 	
 	public void resolvePhysics() {
-		if(playerState.physics()){
+		if(playerState.fall()){
 			camState.move(QDirection.S);
 		}
 	}
