@@ -4,7 +4,7 @@ import tryan.inq.mobility.QDirection;
 import tryan.inq.mobility.QMoverType;
 import tryan.inq.overhead.QGameSettings;
 
-public class QCameraState extends QActorState implements QMoveable, QControllable {
+public class QCameraState extends QDynamicActorState implements QMoveable, QControllable {
 	// These camera bounds constraints will be set by the scene state as a new scene is loaded
 	private int minX;
 	private int minY;

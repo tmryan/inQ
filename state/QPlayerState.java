@@ -5,7 +5,7 @@ import tryan.inq.mobility.QDirection;
 import tryan.inq.mobility.QMoverType;
 import tryan.inq.mobility.QPathingMap;
 
-public class QPlayerState extends QActorState implements QMoveable, QControllable {
+public class QPlayerState extends QDynamicActorState implements QMoveable, QControllable {
 	QKeyboardManager keyMan;
 	
 	public QPlayerState(int x, int y, int width, int height, int speed, int id, QPathingMap pathingMap) {

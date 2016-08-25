@@ -6,9 +6,9 @@ import java.awt.image.BufferedImage;
 import tryan.inq.overhead.QResourceManager;
 
 /*
- * Note: Need to abstract actors
+ * Note: Need to differentiate dynamic and static scenery actors
  */
-public class QSceneryActor extends QActor {
+public class QSceneryActor extends QDynamicActor {
 	
 	public QSceneryActor(BufferedImage img, QResourceManager resMan, int layer) {
 		super(img, resMan, layer);

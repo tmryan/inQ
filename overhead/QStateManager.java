@@ -16,7 +16,9 @@ import tryan.inq.gfx.QActor;
 import tryan.inq.gfx.QAnimMap;
 import tryan.inq.gfx.QAnimation;
 import tryan.inq.gfx.QCameraActor;
+import tryan.inq.gfx.QDynamicActor;
 import tryan.inq.gfx.QGraphics;
+import tryan.inq.gfx.QInteractableActor;
 import tryan.inq.gfx.QScene;
 import tryan.inq.gfx.QSceneryActor;
 import tryan.inq.mobility.QCameraMover;
@@ -30,6 +32,7 @@ import tryan.inq.mobility.QWalkMover;
 import tryan.inq.state.QActorState;
 import tryan.inq.state.QCameraState;
 import tryan.inq.state.QGameState;
+import tryan.inq.state.QInteractableState;
 import tryan.inq.state.QPlayerState;
 import tryan.inq.state.QSceneState;
 import tryan.inq.state.QSceneryState;
@@ -41,7 +44,6 @@ import tryan.inq.state.QSceneryState;
  * @author Thomas Ryan
  *
  */
-
 public class QStateManager {
 	private QGameState gameState;
 	private QGraphics gfx;
@@ -113,6 +115,9 @@ public class QStateManager {
 		for(int i = 0; i < 40; i++) {
 			testSceneMap.setPathingCellType(25, i, QPathType.NOPATH);
 			testSceneMap.setPathingCellType(26, i, QPathType.NOPATH);
+		}
+		
+		for(int i = 0; i < 28; i++) {
 			testSceneMap.setPathingCellType(27, i, QPathType.NOPATH);
 			testSceneMap.setPathingCellType(28, i, QPathType.NOPATH);
 			testSceneMap.setPathingCellType(29, i, QPathType.NOPATH);
@@ -121,7 +126,6 @@ public class QStateManager {
 			testSceneMap.setPathingCellType(32, i, QPathType.NOPATH);
 			testSceneMap.setPathingCellType(33, i, QPathType.NOPATH);
 			testSceneMap.setPathingCellType(34, i, QPathType.NOPATH);
-			testSceneMap.setPathingCellType(35, i, QPathType.NOPATH);
 		}
 	
 		for(int i = 87; i < testSceneMap.getColCount(); i++) {
@@ -137,6 +141,7 @@ public class QStateManager {
 		}
 		
 		for(int i = 0; i < 50; i++) {
+			testSceneMap.setPathingCellType(35, i, QPathType.NOPATH);
 			testSceneMap.setPathingCellType(36, i, QPathType.NOPATH);
 			testSceneMap.setPathingCellType(37, i, QPathType.NOPATH);
 		}
@@ -182,10 +187,10 @@ public class QStateManager {
 		}
 		
 		// Adding player to test
-		QActor peegOne = new QActor(resMan.getImage("peegPlayer.png"), resMan, 10);
+		QDynamicActor peegOne = new QDynamicActor(resMan.getImage("peegPlayer.png"), resMan, 10);
 		QPlayerState pOneState = new QPlayerState(25, 345, 
 				resMan.getImage("peegPlayer.png").getWidth(), resMan.getImage("peegPlayer.png").getHeight(),
-				5, peegOne.getActorId(), testSceneMap);
+				7, peegOne.getActorId(), testSceneMap);
 		peegOne.addAnimMap(resMan.getAnimMap("peegAnims"));
 		pOneState.addMoverModule(QMoverType.WALK, new QWalkMover());
 		pOneState.addMoverModule(QMoverType.FALL, new QFallingMover());
@@ -194,14 +199,14 @@ public class QStateManager {
 		
 		// Adding camera
 		QCameraActor cam = new QCameraActor(0, 0);
-		QCameraState camState = new QCameraState(0, 0, 5, cam.getActorId());
+		QCameraState camState = new QCameraState(0, 0, 7, cam.getActorId());
 		camState.addMoverModule(QMoverType.CAMERA, new QCameraMover(pOneState));
 		cam.attachActorState(camState);
 
 		// Creating scene
 		QScene animTestScene = new QScene(resMan, resMan.getImage("bg1.jpg"));
 		QSceneState testSceneState = new QSceneState(resMan.getImage("bg1.jpg").getWidth(), resMan.getImage("bg1.jpg").getHeight(), pOneState,
-													 10, 10, 2400, 1235);
+													 10, 10, 2400, 1230);
 		gameState.addSceneState(testSceneState);
 		animTestScene.attachSceneState(testSceneState);
 		testSceneState.attachPathingMap(testSceneMap);
@@ -216,7 +221,7 @@ public class QStateManager {
 		
 		// Adding scenery		
 		QSceneryActor sun = new QSceneryActor(resMan.getImage("sun.png"), resMan, 1);
-		QSceneryState sunState = new QSceneryState(1000, 15, 
+		QSceneryState sunState = new QSceneryState(974, 21, 
 				resMan.getImage("sun.png").getWidth(), resMan.getImage("sun.png").getHeight(),
 				4, sun.getActorId());
 		sun.attachActorState(sunState);
@@ -248,6 +253,16 @@ public class QStateManager {
 		playableArea.attachActorState(playableAreaState);
 		animTestScene.addScenery(playableArea);
 		testSceneState.addSceneryState(playableAreaState);
+		
+		// Adding test interactable
+		QInteractableActor box = new QInteractableActor(resMan.getImage("clickyTest.png"), resMan, 3);
+		QInteractableState boxState = new QInteractableState(789, 800, 
+				resMan.getImage("clickyTest.png").getWidth(), resMan.getImage("clickyTest.png").getHeight(),
+				box.getActorId());
+		box.attachActorState(boxState);
+		animTestScene.addActor(box);
+		testSceneState.addActorState(boxState);
+		testSceneState.addInteractableState(boxState);
 		
 		// Adding test area triggers
 		QAreaTrigger trigger = new QAreaTrigger(1012, 677, 166, 200, true);

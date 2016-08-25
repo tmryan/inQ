@@ -1,6 +1,7 @@
 package tryan.inq.mobility;
 
 import tryan.inq.state.QCameraState;
+import tryan.inq.state.QDynamicActorState;
 import tryan.inq.state.QPlayerState;
 
 public class QCameraMover extends QAbstractMover {
@@ -49,14 +50,14 @@ public class QCameraMover extends QAbstractMover {
 			
 			if(direction.xDirection() == 1 && (getActorState().getX() + getActorState().getWidth()) < ((QCameraState)getActorState()).getMaxX()) {
 				if(playerState.getX() + (playerState.getWidth() / 2) > getActorState().getX() + (getActorState().getWidth() / 2)) {
-					getActorState().setX(getActorState().getX() + getActorState().getSpeed());
+					getActorState().setX(getActorState().getX() + ((QDynamicActorState) getActorState()).getSpeed());
 					((QCameraState)getActorState()).setIsMoving(true);
 				} else {
 					((QCameraState)getActorState()).setIsMoving(false);
 				}
 			} else if(direction.xDirection() == -1 && (getActorState().getX()) > ((QCameraState)getActorState()).getMinX()) {
 				if(playerState.getX() + (playerState.getWidth() / 2) < getActorState().getX() + (getActorState().getWidth() / 2)) {
-					getActorState().setX(getActorState().getX() - getActorState().getSpeed());
+					getActorState().setX(getActorState().getX() - ((QDynamicActorState) getActorState()).getSpeed());
 					((QCameraState)getActorState()).setIsMoving(true);
 				} else {
 					((QCameraState)getActorState()).setIsMoving(false);

@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import tryan.inq.overhead.QResourceManager;
 import tryan.inq.state.QInteractableState;
 
-public class QInteractableActor extends QActor {
+public class QInteractableActor extends QDynamicActor {
 	
 	public QInteractableActor(BufferedImage img, QResourceManager resMan, int layer) {
 		super(img, resMan, layer);

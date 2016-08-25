@@ -13,41 +13,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import tryan.inq.event.QAreaTrigger;
-import tryan.inq.event.QGameEvent;
-import tryan.inq.event.QTimedEvent;
-import tryan.inq.gfx.QActor;
-import tryan.inq.gfx.QAnimMap;
-import tryan.inq.gfx.QAnimation;
-import tryan.inq.gfx.QCameraActor;
 import tryan.inq.gfx.QGraphics;
-import tryan.inq.gfx.QInteractableActor;
-import tryan.inq.gfx.QScene;
-import tryan.inq.gfx.QSceneryActor;
 import tryan.inq.gfx.QUserInterface;
-import tryan.inq.mobility.QCameraMover;
-import tryan.inq.mobility.QFallingMover;
-import tryan.inq.mobility.QMoverType;
-import tryan.inq.mobility.QPathingMap;
-import tryan.inq.mobility.QSceneryMover;
-import tryan.inq.mobility.QSimpleJumpMover;
-import tryan.inq.mobility.QWalkMover;
-import tryan.inq.overhead.QGameConstants;
 import tryan.inq.overhead.QGameSettings;
 import tryan.inq.overhead.QResourceManager;
 import tryan.inq.overhead.QStateManager;
-import tryan.inq.state.QCameraState;
 import tryan.inq.state.QGameState;
-import tryan.inq.state.QInteractableState;
-import tryan.inq.state.QPlayerState;
-import tryan.inq.state.QSceneState;
-import tryan.inq.state.QSceneryState;
 
 public class QGameController {
-	private QScene animTestScene;
 	private QGameState gameState;
 	private static long lastUpdate;
-	private QResourceManager resMan;
 	private QMouseManager mouseMan;
 	private QKeyboardManager keyMan;
 	private QGameSettings gameSettings;
@@ -62,7 +37,6 @@ public class QGameController {
 	public QGameController(QResourceManager resMan, QGameSettings gameSettings) {
 		mouseMan = new QMouseManager();
 		keyMan = new QKeyboardManager();
-		this.resMan = resMan;
 		gameState = new QGameState(mouseMan, keyMan);	
 		// Note: This will change when fullscreen and resizable windowed modes are supported
 		gfx = new QGraphics(gameState);

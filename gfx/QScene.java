@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.TreeMap;
 
-import tryan.inq.controls.QMouseManager;
 import tryan.inq.overhead.QResourceManager;
 import tryan.inq.state.QSceneState;
 

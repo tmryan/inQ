@@ -1,5 +1,7 @@
 package tryan.inq.mobility;
 
+import tryan.inq.state.QDynamicActorState;
+
 public class QWalkMover extends QAbstractMover {
 	public QWalkMover() {
 		super();
@@ -22,7 +24,7 @@ public class QWalkMover extends QAbstractMover {
 			setDirection(direction);
 			
 			if(getPathingMap().isValidMoveX(getActorState().getBounds(), getPathingType(), direction)) {
-				getActorState().setX(getActorState().getX() + (direction.xDirection() * getActorState().getSpeed()));
+				getActorState().setX(getActorState().getX() + (direction.xDirection() * ((QDynamicActorState) getActorState()).getSpeed()));
 				isWalking = true;
 			}
 		}

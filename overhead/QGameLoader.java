@@ -9,7 +9,8 @@ import tryan.inq.controls.QGameController;
  * the player with the main menu (?), managing load time game settings, and launching 
  * the game controller.
  * 
- * @author Thomas Ryan (June 2016)
+ * @author 		Thomas Ryan (June 2016)
+ * @version		0.3 (Last update: August 2016)
  *
  */
 

@@ -16,6 +16,7 @@ public class QResourceLoader {
 		resMan.addImage("bg3.png");
 		resMan.addImage("playableArea.png");
 		resMan.addImage("sun.png");
+		resMan.addImage("clickyTest.png");
 		
 		resMan.addColor("highlightClr", new Color(23, 164, 255));
 	}

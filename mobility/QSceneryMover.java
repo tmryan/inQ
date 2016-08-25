@@ -1,5 +1,7 @@
 package tryan.inq.mobility;
 
+import tryan.inq.state.QDynamicActorState;
+
 public class QSceneryMover extends QAbstractMover {
 	public QSceneryMover() {
 		super();
@@ -14,7 +16,7 @@ public class QSceneryMover extends QAbstractMover {
 		if(direction != null) {
 			setDirection(direction);
 		
-			getActorState().setX(getActorState().getX() + (direction.xDirection() * getActorState().getSpeed()));
+			getActorState().setX(getActorState().getX() + (direction.xDirection() * ((QDynamicActorState) getActorState()).getSpeed()));
 		}
 		
 		return true;

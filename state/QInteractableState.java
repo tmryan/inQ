@@ -7,7 +7,7 @@ import tryan.inq.mobility.QDirection;
  * Note: Need to abstract actor states soon
  * 		 For example: this doesn't need movers, just animation states
  */
-public class QInteractableState extends QActorState implements QInteractable {	
+public class QInteractableState extends QDynamicActorState implements QInteractable {	
 	private boolean isHightlighted;
 	private QGameEvent gameEvent;
 	private int tDelta;
