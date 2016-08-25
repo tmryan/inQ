@@ -258,15 +258,14 @@ public class QStateManager {
 		});
 		testSceneState.addAreaTrigger(trigger);
 		
-		//Note: Only works with one event right now...
-//		QAreaTrigger trigger2 = new QAreaTrigger(1816, 844, 100, 100, true);
-//		trigger.addGameEvent(new QGameEvent(1) {
-//			@Override
-//			public void playEvent() {
-//				System.out.println("Another cave! Something smells good here. You know, for a pig...");
-//			}
-//		});
-//		testSceneState.addAreaTrigger(trigger2);
+		QAreaTrigger trigger2 = new QAreaTrigger(1816, 844, 100, 100, true);
+		trigger2.addGameEvent(new QGameEvent(1) {
+			@Override
+			public void playEvent() {
+				System.out.println("Another cave! Something smells good here. You know, for a pig...");
+			}
+		});
+		testSceneState.addAreaTrigger(trigger2);
 		
 //		// Adding a test event timer
 //		QTimedEvent timedEvent = new QTimedEvent(5000, true);

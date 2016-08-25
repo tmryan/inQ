@@ -170,7 +170,7 @@ public class QGameController {
 				// Managing debug flags, temp solution
 				gfx.enablePathingOverlay(isPathingOverlayEnabled);
 				gfx.enableBoundsOverlay(ispBoundsEnabled);
-				
+				gfx.setTDelta(deltaTime);
 				
 				// Updating view
 				gfx.updateView(deltaTime);
@@ -182,7 +182,7 @@ public class QGameController {
 				if(secondTime > 1000) {
 					// Note: UI needs an FPS overlay
 					// Set current FPS value to frames here
-					System.out.println(frames);
+					gfx.setFPS(frames);
 					frames = 0;
 					secondTime = 0;
 				}
