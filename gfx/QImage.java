@@ -13,7 +13,7 @@ public class QImage {
 		BufferedImage img = null;
 		
 		try {
-			img = ImageIO.read(new File(QImage.class.getResource("../resources/" + file).getFile()));
+			img = ImageIO.read(new File("img/" + file));
 		} catch (IOException e) {
 			System.out.println("Failed to load " + file);
 			e.printStackTrace();
