@@ -3,12 +3,15 @@ inQ is a simple game engine project that I decided to create over the 2016 summe
 
 Now that the fall semester has started, I need to refocus my efforts on school instead of this project. Below are some things I would like to get implemented in the future, but all timeframes are purely conjecture.
 
+I've added a zipped folder with inQ_Test.jar and all the required image files. There isn't any UI yet, the movement doesn't feel great, and the FPS is lower than I would like, but feel free to check it out!
+
 ###ToDo
 ######Timeframe: hopefully I will find some time during school for these
-- Finish interactive actor implementation
-- Place fadeable occlusion actor over area with chest inside
-- Highlight chest if player nearby
+- Fix movement; especially jumping and jump/move
 - Clean up and document code
+- Finish interactive actor implementation
+- Highlight chest if player nearby
+- Implement double jump
 
 ###Next Steps
 ######Timeframe: possibly during the winter break
