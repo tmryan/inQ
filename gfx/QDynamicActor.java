@@ -32,6 +32,7 @@ public class QDynamicActor extends QActor {
 		anims = null;
 		animIter = null;
 		animSpeedMultiplier = 1.0;
+		actorState = null;
 	}
 
 	// Update view from current model state
@@ -118,6 +119,14 @@ public class QDynamicActor extends QActor {
 		return animIter;
 	}
 	
+	public QAnimation.AnimFrame getCurrentAnimFrame() {
+		return currentAnimFrame;
+	}
+	
+	public void setCurrentAnimFrame(QAnimation.AnimFrame frame) {
+		currentAnimFrame = frame;
+	}
+	
 	public int getCurrentFrameLifetime() {
 		return currentFrameLifetime;
 	}
@@ -135,4 +144,5 @@ public class QDynamicActor extends QActor {
 	public int getHeight() {
 		return actorState.getHeight();
 	}
+	
 }

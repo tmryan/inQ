@@ -1,15 +1,14 @@
 package tryan.inq.state;
 
-import tryan.inq.controls.QKeyboardManager;
 import tryan.inq.mobility.QDirection;
+import tryan.inq.mobility.QMoverSystem;
 import tryan.inq.mobility.QMoverType;
-import tryan.inq.mobility.QPathingMap;
 
 public class QPlayerState extends QDynamicActorState implements QMoveable, QControllable {
-	QKeyboardManager keyMan;
-	
-	public QPlayerState(int x, int y, int width, int height, int speed, int id, QPathingMap pathingMap) {
-		super(x, y, width, height, speed, id, pathingMap);
+	public QPlayerState(int x, int y, int width, int height, int speed, int id) {
+		super(x, y, width, height, speed, id);
+		
+		attachMoverSystem(new QMoverSystem(this));
 	}
 
 	@Override

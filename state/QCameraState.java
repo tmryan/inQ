@@ -1,6 +1,7 @@
 package tryan.inq.state;
 
 import tryan.inq.mobility.QDirection;
+import tryan.inq.mobility.QMoverSystem;
 import tryan.inq.mobility.QMoverType;
 import tryan.inq.overhead.QGameSettings;
 
@@ -13,13 +14,14 @@ public class QCameraState extends QDynamicActorState implements QMoveable, QCont
 	private boolean isMoving;
 	
 	public QCameraState(int x, int y, int speed, int id) {
-		super(x, y, QGameSettings.getWinWidth(), QGameSettings.getWinHeight(), speed, id, null);
+		super(x, y, QGameSettings.getWinWidth(), QGameSettings.getWinHeight(), speed, id);
 		
 		minX = 0;
 		minY = 0;
 		maxX = 0;
 		maxY = 0;
 		isMoving = false;
+		attachMoverSystem(new QMoverSystem(this));
 	}
 
 	@Override

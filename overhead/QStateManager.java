@@ -17,10 +17,12 @@ import tryan.inq.gfx.QAnimMap;
 import tryan.inq.gfx.QAnimation;
 import tryan.inq.gfx.QCameraActor;
 import tryan.inq.gfx.QDynamicActor;
+import tryan.inq.gfx.QFadeableActor;
 import tryan.inq.gfx.QGraphics;
 import tryan.inq.gfx.QInteractableActor;
 import tryan.inq.gfx.QScene;
 import tryan.inq.gfx.QSceneryActor;
+import tryan.inq.mobility.QBounds;
 import tryan.inq.mobility.QCameraMover;
 import tryan.inq.mobility.QFallingMover;
 import tryan.inq.mobility.QMoverType;
@@ -38,7 +40,7 @@ import tryan.inq.state.QSceneState;
 import tryan.inq.state.QSceneryState;
 
 /**
- * This class manages the loading of game state from disk. Currently XML loader implementation is halted
+ * This class will manage the loading of game state from disk. Currently XML loader implementation is halted
  * and all data loading is hardcoded.
  * 
  * @author Thomas Ryan
@@ -89,8 +91,42 @@ public class QStateManager {
 				new QAnimation.AnimFrame(resMan.getImage("peegPlayer.png"), 1)));
 		resMan.addAnimMap("peegAnims", peegAnims);
 		
+		// Adding player to test
+		QDynamicActor peegOne = new QDynamicActor(resMan.getImage("peegPlayer.png"), resMan, 7);
+		QPlayerState pOneState = new QPlayerState(25, 345, 
+				resMan.getImage("peegPlayer.png").getWidth(), resMan.getImage("peegPlayer.png").getHeight(),
+				7, peegOne.getActorId());
+		peegOne.addAnimMap(resMan.getAnimMap("peegAnims"));
+		pOneState.addMoverModule(QMoverType.WALK, new QWalkMover());
+		pOneState.addMoverModule(QMoverType.FALL, new QFallingMover());
+		pOneState.addMoverModule(QMoverType.JUMP, new QSimpleJumpMover());
+		peegOne.attachActorState(pOneState);
+		
+		// Adding camera
+		QCameraActor cam = new QCameraActor(0, 0);
+		QCameraState camState = new QCameraState(0, 0, 7, cam.getActorId());
+		camState.addMoverModule(QMoverType.CAMERA, new QCameraMover(pOneState));
+		cam.attachActorState(camState);
+
+		// Creating scene
+		QScene animTestScene = new QScene(2400, 1200, resMan, resMan.getImage("bg1.jpg"));
+		QSceneState testSceneState = new QSceneState(2400, 1200, pOneState,
+													 10, 10, 2400, 1200);
+		gameState.addSceneState(testSceneState);
+		animTestScene.attachSceneState(testSceneState);
+		
+		gameState.attachCameraState(camState);
+		gameState.addPlayerState(pOneState);
+		animTestScene.addPlayer(peegOne);
+		animTestScene.addCamera(cam);
+		
+		gfx.addScene(animTestScene, testSceneState.getSceneId());
+		
 		// Creating a pathing map in this mess of data
-		QPathingMap testSceneMap = new QPathingMap(resMan.getImage("bg1.jpg").getWidth(), resMan.getImage("bg1.jpg").getHeight());
+		QPathingMap testSceneMap = new QPathingMap(testSceneState.getWidth(), testSceneState.getHeight());
+		
+		testSceneState.attachPathingMap(testSceneMap);
+		pOneState.attachPathingMap(testSceneMap);
 		
 		// Temporary hardcoded pathing map generation
 		for(int i = 0; i < 27; i++) {
@@ -185,40 +221,7 @@ public class QStateManager {
 			testSceneMap.setPathingCellType(46, i, QPathType.NOPATH);
 			testSceneMap.setPathingCellType(47, i, QPathType.NOPATH);
 		}
-		
-		// Adding player to test
-		QDynamicActor peegOne = new QDynamicActor(resMan.getImage("peegPlayer.png"), resMan, 10);
-		QPlayerState pOneState = new QPlayerState(25, 345, 
-				resMan.getImage("peegPlayer.png").getWidth(), resMan.getImage("peegPlayer.png").getHeight(),
-				7, peegOne.getActorId(), testSceneMap);
-		peegOne.addAnimMap(resMan.getAnimMap("peegAnims"));
-		pOneState.addMoverModule(QMoverType.WALK, new QWalkMover());
-		pOneState.addMoverModule(QMoverType.FALL, new QFallingMover());
-		pOneState.addMoverModule(QMoverType.JUMP, new QSimpleJumpMover());
-		peegOne.attachActorState(pOneState);
-		
-		// Adding camera
-		QCameraActor cam = new QCameraActor(0, 0);
-		QCameraState camState = new QCameraState(0, 0, 7, cam.getActorId());
-		camState.addMoverModule(QMoverType.CAMERA, new QCameraMover(pOneState));
-		cam.attachActorState(camState);
-
-		// Creating scene
-		QScene animTestScene = new QScene(resMan, resMan.getImage("bg1.jpg"));
-		QSceneState testSceneState = new QSceneState(resMan.getImage("bg1.jpg").getWidth(), resMan.getImage("bg1.jpg").getHeight(), pOneState,
-													 10, 10, 2400, 1230);
-		gameState.addSceneState(testSceneState);
-		animTestScene.attachSceneState(testSceneState);
-		testSceneState.attachPathingMap(testSceneMap);
-		
-		gameState.attachCameraState(camState);
-		gameState.addPlayerState(pOneState);
-
-		animTestScene.addPlayer(peegOne);
-		animTestScene.addCamera(cam);
-		
-		gfx.addScene(animTestScene, testSceneState.getSceneId());
-		
+				
 		// Adding scenery		
 		QSceneryActor sun = new QSceneryActor(resMan.getImage("sun.png"), resMan, 1);
 		QSceneryState sunState = new QSceneryState(974, 21, 
@@ -260,21 +263,42 @@ public class QStateManager {
 				resMan.getImage("clickyTest.png").getWidth(), resMan.getImage("clickyTest.png").getHeight(),
 				box.getActorId());
 		box.attachActorState(boxState);
+		boxState.disableFading();
 		animTestScene.addActor(box);
 		testSceneState.addActorState(boxState);
 		testSceneState.addInteractableState(boxState);
 		
-		// Adding test area triggers
-		QAreaTrigger trigger = new QAreaTrigger(1012, 677, 166, 200, true);
-		trigger.addGameEvent(new QGameEvent(1) {
-			@Override
-			public void playEvent() {
-				System.out.println("A hidden cave! Pigs love hidden caves!");
-			}
-		});
-		testSceneState.addAreaTrigger(trigger);
+		// Adding test fadeable wall
+		QFadeableActor caveCover = new QFadeableActor(resMan.getImage("caveCover1.jpg"), resMan, 8);
+		QInteractableState caveCoverState = new QInteractableState(687, 675, 
+				resMan.getImage("caveCover1.jpg").getWidth(), resMan.getImage("caveCover1.jpg").getHeight(),
+				caveCover.getActorId());
+		caveCover.attachActorState(caveCoverState);
+		caveCoverState.disableHighlight();
+		caveCoverState.enableFading();
+		caveCoverState.attachAreaTrigger(new QAreaTrigger(new QBounds(682, 651, 576, 225), false,
+				new QGameEvent(1, caveCoverState) {
+					@Override
+					public void playEvent() {
+						((QInteractableState) getTriggerActor()).fade();
+						System.out.println("A hidden cave! Pigs love hidden caves!");
+					}
+				}));
+		animTestScene.addActor(caveCover);
+		testSceneState.addActorState(caveCoverState);
+		testSceneState.addInteractableState(caveCoverState);
 		
-		QAreaTrigger trigger2 = new QAreaTrigger(1816, 844, 100, 100, true);
+		// Adding test area triggers
+//		QAreaTrigger trigger = new QAreaTrigger(new QBounds(1012, 677, 166, 200), true);
+//		trigger.addGameEvent(new QGameEvent(1) {
+//			@Override
+//			public void playEvent() {
+//				System.out.println("A hidden cave! Pigs love hidden caves!");
+//			}
+//		});
+//		testSceneState.addAreaTrigger(trigger);
+		
+		QAreaTrigger trigger2 = new QAreaTrigger(new QBounds(1816, 844, 100, 100), true);
 		trigger2.addGameEvent(new QGameEvent(1) {
 			@Override
 			public void playEvent() {
@@ -296,7 +320,7 @@ public class QStateManager {
 	
 	// Note: Halted XML loader implementation for now
 	public void loadGameStateFromXML() {
-		// Creating StAX-based reader
+		// Creating simple StAX reader
 		FileInputStream inStream = null;
 		
 		try {
@@ -416,7 +440,7 @@ public class QStateManager {
 		}
 		
 		// Creating scene and scene state
-		scene = new QScene(resMan, resMan.getImage(sData.bgimg));
+		scene = new QScene(sData.width, sData.height, resMan, resMan.getImage(sData.bgimg));
 		sceneState = new QSceneState(sData.width, sData.height, gameState.getPlayerState(),
 				sData.minCamX, sData.minCamY, sData.maxCamX, sData.maxCamY);
 		
@@ -439,18 +463,13 @@ public class QStateManager {
 	}
 	
 	public QActor createActorFromXML(String filepath) {
-		// need to determine actor type and switch to proper object creation
-		
-		
+		// Note: Could actor and state be created at same time?
+		// Need to determine actor type and switch to proper object creation
 		return null;
 	}
 	
 	public QActorState createActorStateFromXML(String filepath) {
-		// need to determine actor type and switch to proper object creation
-		
-		
-		
-		
+		// Need to determine actor type and switch to proper object creation
 		return null;
 	}
 	
@@ -509,7 +528,7 @@ public class QStateManager {
 			e.printStackTrace();
 		}
 		
-		trigger = new QAreaTrigger(tData.x, tData.y, tData.width, tData.height, tData.oneShot);
+		trigger = new QAreaTrigger(new QBounds(tData.x, tData.y, tData.width, tData.height), tData.oneShot);
 		
 		for(String event : tData.events) {
 			trigger.addGameEvent(createGameEventFromXML(event));
@@ -519,15 +538,12 @@ public class QStateManager {
 	}
 	
 	public QTimedEvent createTimedEventFromXML() {
-		
-		
-		
+		// Create QTimedEvent from xml
 		return null;
 	}
 	
 	private QGameEvent createGameEventFromXML(String filepath) {
-		
-		
+		// Somehow get game event object here...
 		return null;
 	}
 	

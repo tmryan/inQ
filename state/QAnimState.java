@@ -8,7 +8,8 @@ public enum QAnimState {
 	FALL(4, "fall", false),
 	ATTACK(5, "attack", false),
 	DIE(6, "die", false),
-	DEAD(7, "dead", true);
+	DEAD(7, "dead", true),
+	FADED(8, "faded", true);
 	
 	private final int animState;
 	private final String animName;

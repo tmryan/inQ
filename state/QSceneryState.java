@@ -1,6 +1,7 @@
 package tryan.inq.state;
 
 import tryan.inq.mobility.QDirection;
+import tryan.inq.mobility.QMoverSystem;
 import tryan.inq.mobility.QMoverType;
 
 public class QSceneryState extends QDynamicActorState implements QMoveable, QControllable {
@@ -11,7 +12,9 @@ public class QSceneryState extends QDynamicActorState implements QMoveable, QCon
 	 */
 	
 	public QSceneryState(int x, int y, int width, int height, int speed, int id) {
-		super(x, y, width, height, speed, id, null);
+		super(x, y, width, height, speed, id);
+		
+		attachMoverSystem(new QMoverSystem(this));
 	}
 	
 	@Override

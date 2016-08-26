@@ -68,6 +68,10 @@ public class QSceneState {
 		eventMan.checkAreaTriggers(playerState);
 		eventMan.checkTimedEvents(tickTime);
 		
+		for(QInteractableState interactable : interactableStates) {
+			eventMan.addGameEvent(interactable.checkAreaTrigger(playerState.getX(), playerState.getY(), playerState));
+		}
+		
 		// Play queued game events
 		playNextEvent();
 	}
@@ -173,10 +177,12 @@ public class QSceneState {
 		 * Note: For now searching active area for collisions will be enough
 		 * 		 Will eventually need to put colliding actors into heap and
 		 * 		 return the highest click priority
+		 * 
+		 * Note: Limiting this search to hoverable actors for now, will fix logic later
 		 */	
 		
 		for(QInteractableState interactable : interactableStates) {
-			if(interactable.containsCoords(x, y)) {
+			if(interactable.containsCoords(x, y) && interactable.isHighlightable()) {
 				foundActor = interactable;
 			}
 		}
@@ -186,6 +192,14 @@ public class QSceneState {
 	
 	public int getSceneId() {
 		return id;
+	}
+	
+	public int getWidth() {
+		return sceneWidth;
+	}
+	
+	public int getHeight() {
+		return sceneHeight;
 	}
 	
 	//////////////

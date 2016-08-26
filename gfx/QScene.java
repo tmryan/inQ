@@ -25,11 +25,11 @@ public class QScene {
 	boolean isPathingOverlayEnabled;
 	boolean ispBoundsEnabled;
 	
-	public QScene(QResourceManager resMan, BufferedImage bgImg) {
+	public QScene(int width, int height, QResourceManager resMan, BufferedImage bgImg) {
 		sceneState = null;
 		backGroundImg = new QScenery(0, 0, bgImg, 0);
-		sceneWidth = resMan.getImage("bg1.jpg").getWidth();
-		sceneHeight = resMan.getImage("bg1.jpg").getHeight();
+		sceneWidth = width;
+		sceneHeight = height;
 		player = null;
 		actors = new TreeMap<Integer, QActor>();
 		scenery = new TreeMap<Integer, QSceneryActor>();
@@ -76,9 +76,10 @@ public class QScene {
 			actors.get(id).draw(g2);
 		}
 		
+		// Drawing player
 		player.draw(g2);
 		
-		// Drawing debug overlays last
+		// Drawing debug overlays last, temporary solution
 		if(isPathingOverlayEnabled) {
 			sceneState.drawPathingOverlay(g2);
 		}

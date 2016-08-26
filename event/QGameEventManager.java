@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
-import tryan.inq.state.QActorState;
+import tryan.inq.state.QDynamicActorState;
 
 public class QGameEventManager {
 	private PriorityQueue<QGameEvent> eventQueue;
@@ -32,13 +32,6 @@ public class QGameEventManager {
 		});
 	}
 	
-	// Enqueue game event
-	public void addGameEvent(QGameEvent gameEvent) {
-		if(gameEvent != null){
-			eventQueue.add(gameEvent);
-		}
-	}
-	
 	public void addAreaTrigger(QAreaTrigger areaTrigger) {
 		areaTriggers.add(areaTrigger);
 	}
@@ -47,7 +40,7 @@ public class QGameEventManager {
 		timedEvents.add(timedEvent);
 	}
 	
-	synchronized public void checkAreaTriggers(QActorState actorState) {
+	public void checkAreaTriggers(QDynamicActorState causalActor) {
 		// See if the given actor is inside any area trigger, add event to queue if so
 		Iterator<QAreaTrigger> iter = areaTriggers.iterator();
 		QAreaTrigger trigger = null;
@@ -56,8 +49,9 @@ public class QGameEventManager {
 			trigger = iter.next();
 			
 			// Note: This needs to check if bounds is clipped, not just coords
-			if(trigger.containsCoords(actorState.getX(), actorState.getY())) {
+			if(trigger.containsCoords(causalActor.getX(), causalActor.getY())) {
 				addGameEvent(trigger.getGameEvent());
+				trigger.setCausalActor(causalActor);
 				
 				// If trigger flagged as one shot, remove from list
 				if(trigger.isOneShot()) {
@@ -85,10 +79,13 @@ public class QGameEventManager {
 			}
 		}
 	}
-	
-	///////////////
-	// eventQueue
-	///////////
+
+	// Enqueue game event
+	public void addGameEvent(QGameEvent gameEvent) {
+		if(gameEvent != null){
+			eventQueue.add(gameEvent);
+		}
+	}
 	
 	public boolean hasNextEvent() {
 		return !eventQueue.isEmpty();
