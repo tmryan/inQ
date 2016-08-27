@@ -1,9 +1,11 @@
 # inQ
 inQ is a simple game engine project that I decided to create over the 2016 summer break. I am passionate about games as well as solving problems and, fortunately for me, game engines involve lots of both! So, this is the start of something awesome and I look forward to learning as much as I can.
 
+####Latest Update:
 Now that the fall semester has started, I need to refocus my efforts on school instead of this project. Below are some things I would like to get implemented in the future, but all timeframes are purely conjecture.
 
-I've added a zipped folder with inQ_Test.jar and all the required image files. There isn't any UI yet, the movement doesn't feel great, and the FPS is lower than I would like, but feel free to check it out!
+####inQ_Test:
+I've added a zipped folder with inQ_Test.jar and all the required image files. There isn't any UI yet, the movement doesn't feel great, and the FPS is lower than I would like, but feel free to check it out [HERE](inQ_Test.zip)! Just download the zipped folder, extract, and double-click on inQ_Test.jar to launch the program. Right now it consists of a simple test of the systems I have implemented so far. In the future I will expand it to include a UI layer and other features.
 
 ###ToDo
 ######Timeframe: hopefully I will find some time during school for these
@@ -21,6 +23,7 @@ I've added a zipped folder with inQ_Test.jar and all the required image files. T
 - Fix game loop
 - Combine animation frames onto one image (i.e. sprite sheets,texture atlas,...)
 - See if there are any easily redesigned systems, or new systems
+- Clean up and document code...
 
 ###Fun Stuff
 ######Timeframe: no time soon
@@ -35,3 +38,4 @@ I've added a zipped folder with inQ_Test.jar and all the required image files. T
 - Play with skills, items and combat systems implementation
 - Find better design for mover and collision systems
 - Build a more robust editor for fun
+- Also, clean up and document code
