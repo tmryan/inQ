@@ -7,6 +7,8 @@ Now that the fall semester has started, I need to refocus my efforts on school i
 ####inQ_Test:
 I've added a zipped folder with inQ_Test.jar and all the required image files. There isn't any UI yet, the movement doesn't feel great, and the FPS is lower than I would like, but feel free to check it out [HERE](inQ_Test.zip)! Just download the zipped folder, extract, and double-click on inQ_Test.jar to launch the program. Right now it consists of a simple test of the systems I have implemented so far. In the future I will expand it to include a UI layer and other features.
 
+Press the 'A' key to walk left, 'S' to walk right, and the spacebar to jump.
+
 ###ToDo
 ######Timeframe: hopefully I will find some time during school for these
 - Fix movement; especially jumping and jump/move
