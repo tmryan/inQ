@@ -16,6 +16,7 @@ Press the 'A' key to walk left, 'S' to walk right, and the spacebar to jump.
 - Finish interactive actor implementation
 - Highlight chest if player nearby
 - Implement double jump
+- Abstract common functionality from actor states, etc.
 
 ###Next Steps
 ######Timeframe: possibly during the winter break
